@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('administrative_requests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('professor_id')->nullable()->constrained()->onDelete('set null');
             $table->string('type');
-            $table->enum('status', ['pending', 'validated', 'rejected'])->default('pending');
+            $table->enum('status', ['pending', 'transferred', 'validated', 'rejected'])->default('pending');
             $table->text('reason')->nullable();
             $table->string('file_path')->nullable();
             $table->timestamps();

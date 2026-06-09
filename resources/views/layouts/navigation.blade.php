@@ -43,6 +43,17 @@
                         <x-nav-link :href="route('professor.reservations.index')" :active="request()->routeIs('professor.reservations.*')"> {{ __('Réservations') }} </x-nav-link>
                         <x-nav-link :href="route('professor.schedules.index')" :active="request()->routeIs('professor.schedules.*')"> {{ __('Mon EDT') }} </x-nav-link>
                         <x-nav-link :href="route('professor.requests.index')" :active="request()->routeIs('professor.requests.*')"> {{ __('Mes Demandes') }} </x-nav-link>
+                        <x-nav-link :href="route('professor.documents.index')" :active="request()->routeIs('professor.documents.*')">
+                            {{ __('Demandes de documents') }}
+                            @php
+                                $pendingDocRequestsCount = \App\Models\AdministrativeRequest::where('status', 'transferred')
+                                    ->where('professor_id', auth()->user()->professor?->id)
+                                    ->count();
+                            @endphp
+                            @if($pendingDocRequestsCount > 0)
+                                <span class="ml-1.5 px-2 py-0.5 text-[10px] font-bold bg-[#d946ef] text-white rounded-full">{{ $pendingDocRequestsCount }}</span>
+                            @endif
+                        </x-nav-link>
                     @elseif(auth()->user()->isStudent())
                         <x-nav-link :href="route('student.dashboard')" :active="request()->routeIs('student.dashboard')">
                             {{ __('Mon Espace') }}
@@ -115,6 +126,9 @@
             @elseif(auth()->user()->isProfessor())
                 <x-responsive-nav-link :href="route('professor.dashboard')" :active="request()->routeIs('professor.dashboard')">
                     {{ __('Prof Dashboard') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('professor.documents.index')" :active="request()->routeIs('professor.documents.*')">
+                    {{ __('Demandes de documents') }}
                 </x-responsive-nav-link>
             @elseif(auth()->user()->isStudent())
                 <x-responsive-nav-link :href="route('student.dashboard')" :active="request()->routeIs('student.dashboard')">

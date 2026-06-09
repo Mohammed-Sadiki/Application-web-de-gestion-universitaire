@@ -73,14 +73,17 @@
                                         <td class="py-4 whitespace-nowrap text-gray-400">{{ $req->created_at->format('d/m/Y') }}</td>
                                         <td class="py-4 whitespace-nowrap">
                                             @if($req->status === 'validated')
-                                                <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-[#06b6d4]/10 border border-[#06b6d4]/20 text-[#06b6d4]">Validé</span>
+                                                <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-[#06b6d4]/10 border border-[#06b6d4]/20 text-[#06b6d4]">✅ Validé</span>
                                             @elseif($req->status === 'rejected')
-                                                <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-[#d946ef]/10 border border-[#d946ef]/20 text-[#d946ef]">Refusé</span>
+                                                <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-[#d946ef]/10 border border-[#d946ef]/20 text-[#d946ef]">❌ Refusé</span>
                                                 @if($req->reason)
                                                     <p class="text-xs text-[#d946ef] mt-1">{{ $req->reason }}</p>
                                                 @endif
+                                            @elseif($req->status === 'transferred')
+                                                <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-orange-500/10 border border-orange-500/20 text-orange-400">📨 En cours de traitement</span>
+                                                <p class="text-[11px] text-gray-500 mt-1">Transmise au professeur concerné</p>
                                             @else
-                                                <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-yellow-500/10 border border-yellow-500/20 text-yellow-400">En attente</span>
+                                                <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-yellow-500/10 border border-yellow-500/20 text-yellow-400">⏳ En attente</span>
                                             @endif
                                         </td>
                                         <td class="py-4 text-right whitespace-nowrap text-sm">

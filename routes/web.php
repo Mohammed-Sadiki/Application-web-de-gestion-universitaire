@@ -33,6 +33,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
         Route::patch('/requests/{adminRequest}', [App\Http\Controllers\Admin\DashboardController::class, 'validateRequest'])->name('requests.validate');
+        Route::post('/requests/{adminRequest}/upload', [App\Http\Controllers\Admin\DashboardController::class, 'uploadDocument'])->name('requests.upload');
         Route::resource('users', App\Http\Controllers\Admin\UserController::class);
         Route::resource('departments', App\Http\Controllers\Admin\DepartmentController::class);
         Route::resource('groups', App\Http\Controllers\Admin\GroupController::class);
@@ -81,6 +82,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Administrative Requests (Attestation de travail, Ordre de mission)
         Route::get('/requests', [App\Http\Controllers\Professor\RequestController::class, 'index'])->name('requests.index');
         Route::post('/requests', [App\Http\Controllers\Professor\RequestController::class, 'store'])->name('requests.store');
+
+        // Transferred Document Requests
+        Route::get('/documents', [App\Http\Controllers\Professor\DocumentRequestController::class, 'index'])->name('documents.index');
+        Route::patch('/documents/{adminRequest}/upload', [App\Http\Controllers\Professor\DocumentRequestController::class, 'upload'])->name('documents.upload');
     });
 
     // Student Routes

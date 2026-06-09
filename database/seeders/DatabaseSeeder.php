@@ -246,12 +246,13 @@ class DatabaseSeeder extends Seeder
         // 13. Administrative Requests (At least 5)
         $reqData = [
             // Students
-            ['user_id' => $students[0]->user_id, 'type' => 'Attestation de scolarité', 'status' => 'pending', 'reason' => null, 'file_path' => null],
-            ['user_id' => $students[1]->user_id, 'type' => 'Relevé de notes', 'status' => 'validated', 'reason' => null, 'file_path' => 'documents/doc_demo_notes.pdf'],
-            ['user_id' => $students[2]->user_id, 'type' => 'Certificat d\'inscription', 'status' => 'rejected', 'reason' => 'Dossier incomplet, pièces manquantes.', 'file_path' => null],
+            ['user_id' => $students[0]->user_id, 'professor_id' => null, 'type' => 'Attestation de scolarité', 'status' => 'pending', 'reason' => null, 'file_path' => null],
+            ['user_id' => $students[0]->user_id, 'professor_id' => $professors[0]->id, 'type' => 'Relevé de notes', 'status' => 'transferred', 'reason' => 'Transféré automatiquement au professeur concerné.', 'file_path' => null],
+            ['user_id' => $students[1]->user_id, 'professor_id' => null, 'type' => 'Relevé de notes', 'status' => 'validated', 'reason' => null, 'file_path' => 'documents/doc_demo_notes.pdf'],
+            ['user_id' => $students[2]->user_id, 'professor_id' => null, 'type' => 'Certificat d\'inscription', 'status' => 'rejected', 'reason' => 'Dossier incomplet, pièces manquantes.', 'file_path' => null],
             // Professors
-            ['user_id' => $professors[0]->user_id, 'type' => 'Attestation de travail', 'status' => 'pending', 'reason' => null, 'file_path' => null],
-            ['user_id' => $professors[1]->user_id, 'type' => 'Ordre de mission', 'status' => 'validated', 'reason' => json_encode(['destination' => 'Casablanca', 'start_date' => date('Y-m-d'), 'end_date' => date('Y-m-d', strtotime('+2 days')), 'motif' => 'Participation à la conférence nationale sur la cybersécurité.']), 'file_path' => 'documents/doc_demo_mission.pdf'],
+            ['user_id' => $professors[0]->user_id, 'professor_id' => null, 'type' => 'Attestation de travail', 'status' => 'pending', 'reason' => null, 'file_path' => null],
+            ['user_id' => $professors[1]->user_id, 'professor_id' => null, 'type' => 'Ordre de mission', 'status' => 'validated', 'reason' => json_encode(['destination' => 'Casablanca', 'start_date' => date('Y-m-d'), 'end_date' => date('Y-m-d', strtotime('+2 days')), 'motif' => 'Participation à la conférence nationale sur la cybersécurité.']), 'file_path' => 'documents/doc_demo_mission.pdf'],
         ];
         foreach ($reqData as $req) {
             AdministrativeRequest::create($req);

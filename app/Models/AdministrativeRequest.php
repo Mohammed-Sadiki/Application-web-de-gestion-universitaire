@@ -8,6 +8,7 @@ class AdministrativeRequest extends Model
 {
     protected $fillable = [
         'user_id',
+        'professor_id',
         'type',
         'status',
         'reason',
@@ -17,5 +18,10 @@ class AdministrativeRequest extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function professor()
+    {
+        return $this->belongsTo(Professor::class);
     }
 }
