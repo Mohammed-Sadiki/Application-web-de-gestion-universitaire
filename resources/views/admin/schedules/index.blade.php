@@ -2,10 +2,8 @@
     <x-slot name="header">
         <div class="flex justify-between items-center w-full">
             <div>
-                <h2 class="font-bold text-2xl text-white leading-tight">
-                    {{ __('Gestion de l\'Emploi du Temps') }}
-                </h2>
-                <div class="text-xs text-gray-400 mt-1">Gerez l'ensemble des creneaux et affectations de salles</div>
+                <div class="topbar-title">{{ __('Gestion de l\'Emploi du Temps') }}</div>
+                <div class="topbar-subtitle">Gérez l'ensemble des créneaux et affectations de salles</div>
             </div>
             <a href="{{ route('admin.schedules.create') }}" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-[#8b5cf6] to-[#d946ef] hover:from-[#7c3aed] hover:to-[#c084fc] text-white text-xs font-bold rounded-xl shadow-md transition duration-200">
                 ➕ Ajouter une seance

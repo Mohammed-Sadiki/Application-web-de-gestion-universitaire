@@ -1,56 +1,62 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Mes Annonces') }}
-            </h2>
-            <a href="{{ route('professor.announcements.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                + Nouvelle Annonce
+        <div class="flex justify-between items-center w-full">
+            <div>
+                <div class="topbar-title">Mes Annonces</div>
+                <div class="topbar-subtitle">Communiquez des informations importantes et des actualités à vos étudiants</div>
+            </div>
+            <a href="{{ route('professor.announcements.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#8b5cf6] to-[#d946ef] hover:opacity-90 text-white text-xs font-bold rounded-xl shadow-md transition duration-200">
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Nouvelle Annonce
             </a>
         </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            @if(session('success'))
-                <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-800 rounded">
-                    {{ session('success') }}
-                </div>
-            @endif
+    <div class="py-6 animate-fade-in">
+        @if(session('success'))
+            <div class="bg-green-500/10 border border-green-500/20 text-green-400 px-4 py-3 rounded-xl mb-6 text-sm">
+                <span>{{ session('success') }}</span>
+            </div>
+        @endif
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    @if($announcements->isEmpty())
-                        <p class="text-gray-500 italic text-center py-4">Aucune annonce publiée pour le moment.</p>
-                    @else
-                        <div class="space-y-6">
-                            @foreach($announcements as $announcement)
-                                <div class="p-5 border rounded-lg hover:shadow-sm transition bg-gray-50">
-                                    <div class="flex justify-between items-start">
-                                        <div>
-                                            <span class="text-xs font-semibold text-indigo-600 uppercase tracking-wider bg-indigo-50 px-2 py-1 rounded">
-                                                {{ $announcement->module->name }}
-                                            </span>
-                                            <span class="text-xs text-gray-500 ml-2">
-                                                Publiée le {{ $announcement->created_at->format('d/m/Y à H:i') }}
-                                            </span>
-                                        </div>
-                                        <form method="POST" action="{{ route('professor.announcements.destroy', $announcement) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette annonce ?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-sm text-red-600 hover:text-red-900 font-medium">
-                                                Supprimer
-                                            </button>
-                                        </form>
+        <div class="dark-card rounded-3xl overflow-hidden border border-white/5">
+            <div class="p-6 bg-[#17192a]/30 border-b border-white/5">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 bg-[#8b5cf6] rounded-full animate-pulse"></span>
+                    Liste de vos annonces publiées
+                </h3>
+            </div>
+            <div class="p-6">
+                @if($announcements->isEmpty())
+                    <p class="text-gray-400 italic text-center py-6">Aucune annonce publiée pour le moment.</p>
+                @else
+                    <div class="space-y-6">
+                        @foreach($announcements as $announcement)
+                            <div class="p-5 border border-white/5 rounded-2xl bg-[#17192a]/30 hover:border-white/10 transition duration-300">
+                                <div class="flex justify-between items-start">
+                                    <div class="flex items-center gap-3">
+                                        <span class="px-2.5 py-1 bg-[#8b5cf6]/10 border border-[#8b5cf6]/20 text-[#8b5cf6] rounded-xl text-xs font-bold">
+                                            {{ $announcement->module->name }}
+                                        </span>
+                                        <span class="text-xs text-gray-400">
+                                            Publiée le {{ $announcement->created_at->format('d/m/Y à H:i') }}
+                                        </span>
                                     </div>
-                                    <div class="mt-3 text-gray-700 whitespace-pre-line">
-                                        {{ $announcement->content }}
-                                    </div>
+                                    <form method="POST" action="{{ route('professor.announcements.destroy', $announcement) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette annonce ?');" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="inline-flex items-center px-3 py-1 bg-[#d946ef]/10 hover:bg-[#d946ef]/20 border border-[#d946ef]/20 text-[#d946ef] text-xs font-bold rounded-xl transition">
+                                            Supprimer
+                                        </button>
+                                    </form>
                                 </div>
-                            @endforeach
-                        </div>
-                    @endif
-                </div>
+                                <div class="mt-4 text-gray-300 text-sm whitespace-pre-line leading-relaxed">
+                                    {{ $announcement->content }}
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
             </div>
         </div>
     </div>

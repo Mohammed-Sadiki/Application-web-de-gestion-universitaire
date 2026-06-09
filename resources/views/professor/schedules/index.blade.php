@@ -1,10 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        <div>
-            <h2 class="font-bold text-2xl text-white leading-tight">
-                {{ __('Mon Emploi du Temps') }}
-            </h2>
-            <div class="text-xs text-gray-400 mt-1">Consultez votre planning hebdomadaire de cours et séances d'enseignement</div>
+        <div class="flex justify-between items-center w-full">
+            <div>
+                <div class="topbar-title">Mon Emploi du Temps</div>
+                <div class="topbar-subtitle">Consultez votre planning hebdomadaire de cours et séances d'enseignement</div>
+            </div>
         </div>
     </x-slot>
 

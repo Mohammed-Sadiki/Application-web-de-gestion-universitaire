@@ -1,38 +1,45 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Mes Cours - Classroom') }}
-        </h2>
+        <div class="flex justify-between items-center w-full">
+            <div>
+                <div class="topbar-title">Mes Cours — Classroom</div>
+                <div class="topbar-subtitle">Accédez aux supports de cours et annonces de vos enseignants</div>
+            </div>
+        </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6">
-                    @if($modules->isEmpty())
-                        <p class="text-gray-500">Aucun module disponible.</p>
-                    @else
-                        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                            @foreach($modules as $module)
-                                <a href="{{ route('student.courses.show', $module) }}" class="block bg-gradient-to-br from-indigo-50 to-blue-100 border border-indigo-200 rounded-xl p-5 hover:shadow-md transition-shadow">
-                                    <div class="flex items-center gap-3 mb-3">
-                                        <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
-                                            {{ strtoupper(substr($module->name, 0, 1)) }}
-                                        </div>
-                                        <div>
-                                            <h3 class="font-semibold text-gray-900">{{ $module->name }}</h3>
-                                            <p class="text-xs text-gray-500">{{ $module->department->name ?? '' }}</p>
-                                        </div>
+    <div class="py-6 animate-fade-in">
+        <div class="dark-card rounded-3xl overflow-hidden border border-white/5">
+            <div class="p-6 bg-[#17192a]/30 border-b border-white/5">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 bg-[#8b5cf6] rounded-full animate-pulse"></span>
+                    Mes Modules Académiques
+                </h3>
+            </div>
+            <div class="p-6">
+                @if($modules->isEmpty())
+                    <p class="text-gray-400 italic text-center py-6">Aucun module disponible pour le moment.</p>
+                @else
+                    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        @foreach($modules as $module)
+                            <a href="{{ route('student.courses.show', $module) }}" class="block dark-card rounded-3xl p-5 border border-white/5 hover:border-[#8b5cf6]/40 hover:bg-[#8b5cf6]/5 transition-all duration-300">
+                                <div class="flex items-center gap-4 mb-4">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-[#8b5cf6] to-[#d946ef] rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-md">
+                                        {{ strtoupper(substr($module->name, 0, 1)) }}
                                     </div>
-                                    <div class="flex gap-4 text-xs text-gray-600">
-                                        <span>📄 {{ $module->courseMaterials->count() }} supports</span>
-                                        <span>📢 {{ $module->announcements->count() }} annonces</span>
+                                    <div>
+                                        <h4 class="font-bold text-white text-base leading-snug">{{ $module->name }}</h4>
+                                        <p class="text-xs text-gray-400 mt-0.5">{{ $module->department->name ?? 'Aucun département' }}</p>
                                     </div>
-                                </a>
-                            @endforeach
-                        </div>
-                    @endif
-                </div>
+                                </div>
+                                <div class="flex gap-4 text-xs text-gray-400 border-t border-white/5 pt-3">
+                                    <span class="flex items-center gap-1">📄 <strong class="text-white">{{ $module->courseMaterials->count() }}</strong> supports</span>
+                                    <span class="flex items-center gap-1">📢 <strong class="text-white">{{ $module->announcements->count() }}</strong> annonces</span>
+                                </div>
+                            </a>
+                        @endforeach
+                    </div>
+                @endif
             </div>
         </div>
     </div>

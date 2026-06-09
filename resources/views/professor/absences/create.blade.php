@@ -1,48 +1,65 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Liste de présence — {{ $module->name }}
-            </h2>
-            <a href="{{ route('professor.absences.index') }}" class="text-sm text-blue-600 hover:underline">← Retour</a>
+        <div class="flex justify-between items-center w-full">
+            <div>
+                <div class="topbar-title">Fiche d'Appel : {{ $module->name }}</div>
+                <div class="topbar-subtitle">Sélectionnez la date de la séance et cochez les étudiants absents</div>
+            </div>
+            <a href="{{ route('professor.absences.index') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-bold rounded-xl transition">
+                &larr; Retour
+            </a>
         </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6">
-                    <form action="{{ route('professor.absences.store', $module) }}" method="POST">
-                        @csrf
-                        <div class="mb-4">
-                            <x-input-label for="date" :value="__('Date de la séance')" />
-                            <x-text-input id="date" class="block mt-1 w-48" type="date" name="date"
-                                value="{{ date('Y-m-d') }}" required />
-                            @error('date') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+    <div class="py-6 animate-fade-in">
+        <div class="dark-card rounded-3xl overflow-hidden border border-white/5">
+            <div class="p-6 bg-[#17192a]/30 border-b border-white/5">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 bg-[#d946ef] rounded-full animate-pulse"></span>
+                    Feuille de présence
+                </h3>
+            </div>
+            <div class="p-6">
+                <form action="{{ route('professor.absences.store', $module) }}" method="POST">
+                    @csrf
+                    
+                    <div class="mb-6 max-w-xs">
+                        <label for="date" class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Date de la séance</label>
+                        <input id="date" type="date" name="date" value="{{ date('Y-m-d') }}" required
+                               class="w-full bg-[#0d1220] border border-white/10 text-white rounded-xl px-4 py-2.5 focus:border-[#d946ef] focus:ring-1 focus:ring-[#d946ef]">
+                        @error('date') 
+                            <p class="mt-1 text-xs text-[#d946ef]">{{ $message }}</p> 
+                        @enderror
+                    </div>
+
+                    <p class="text-sm text-gray-400 mb-4 flex items-center gap-2">
+                        <span class="inline-block w-2 h-2 rounded-full bg-[#d946ef]"></span>
+                        Veuillez cocher les étudiants <strong class="text-white">absents</strong> :
+                    </p>
+
+                    @if($students->isEmpty())
+                        <p class="text-gray-400 italic text-center py-6">Aucun étudiant trouvé pour ce module.</p>
+                    @else
+                        <div class="border border-white/5 rounded-2xl overflow-hidden divide-y divide-white/5 bg-[#17192a]/10 mb-6">
+                            @foreach($students as $student)
+                                <label class="flex items-center gap-4 px-5 py-4 hover:bg-white/[0.02] cursor-pointer transition-colors">
+                                    <input type="checkbox" name="absent_students[]" value="{{ $student->id }}"
+                                           class="w-5 h-5 text-[#d946ef] bg-white/5 border border-white/10 rounded focus:ring-offset-0 focus:ring-[#d946ef] checked:bg-[#d946ef]">
+                                    <div class="flex flex-col">
+                                        <span class="text-sm font-semibold text-white">{{ $student->user->name }}</span>
+                                        <span class="text-xs text-gray-400">{{ $student->student_number ?? 'N° d\'étudiant non spécifié' }}</span>
+                                    </div>
+                                </label>
+                            @endforeach
                         </div>
 
-                        <p class="text-sm text-gray-600 mb-3">Cochez les étudiants <strong>absents</strong> :</p>
-
-                        @if($students->isEmpty())
-                            <p class="text-gray-500">Aucun étudiant trouvé pour ce module.</p>
-                        @else
-                            <div class="border rounded-lg divide-y">
-                                @foreach($students as $student)
-                                    <label class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer">
-                                        <input type="checkbox" name="absent_students[]" value="{{ $student->id }}"
-                                               class="w-4 h-4 text-red-600 border-gray-300 rounded">
-                                        <span class="text-sm font-medium text-gray-900">{{ $student->user->name }}</span>
-                                        <span class="text-xs text-gray-500">{{ $student->student_number ?? '' }}</span>
-                                    </label>
-                                @endforeach
-                            </div>
-
-                            <div class="mt-6 flex justify-end">
-                                <x-primary-button>💾 Enregistrer les absences</x-primary-button>
-                            </div>
-                        @endif
-                    </form>
-                </div>
+                        <div class="flex justify-end pt-4 border-t border-white/5">
+                            <button type="submit" class="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-[#d946ef] to-[#8b5cf6] hover:opacity-90 text-white text-xs font-bold rounded-xl shadow-md transition duration-200">
+                                💾 Enregistrer les absences
+                            </button>
+                        </div>
+                    @endif
+                </form>
             </div>
         </div>
     </div>

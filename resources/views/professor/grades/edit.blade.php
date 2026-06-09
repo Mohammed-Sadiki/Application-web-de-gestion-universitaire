@@ -1,62 +1,74 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Saisie des notes : ') }} {{ $module->name }}
-        </h2>
+        <div class="flex justify-between items-center w-full">
+            <div>
+                <div class="topbar-title">Saisie des notes : {{ $module->name }}</div>
+                <div class="topbar-subtitle">Saisissez les notes de contrôle continu (CC) et d'examen pour chaque étudiant</div>
+            </div>
+            <a href="{{ route('professor.grades.index') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-bold rounded-xl transition">
+                &larr; Retour
+            </a>
+        </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <form method="POST" action="{{ route('professor.grades.update', $module) }}">
-                        @csrf
-                        @method('PATCH')
+    <div class="py-6 animate-fade-in">
+        <div class="dark-card rounded-3xl overflow-hidden border border-white/5">
+            <div class="p-6 bg-[#17192a]/30 border-b border-white/5">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 bg-[#8b5cf6] rounded-full animate-pulse"></span>
+                    Liste des étudiants - {{ $module->name }}
+                </h3>
+            </div>
+            <div class="p-6">
+                <form method="POST" action="{{ route('professor.grades.update', $module) }}">
+                    @csrf
+                    @method('PATCH')
 
-                        <table class="min-w-full divide-y divide-gray-200">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-white/5">
                             <thead>
-                                <tr>
-                                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Étudiant</th>
-                                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CC1 (40%)</th>
-                                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CC2 (40%)</th>
-                                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Examen (60%)</th>
-                                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Note Finale</th>
+                                <tr class="text-left text-xs font-bold text-gray-400 uppercase tracking-wider">
+                                    <th class="pb-3 text-left">Étudiant</th>
+                                    <th class="pb-3 text-left">CC1 (40%)</th>
+                                    <th class="pb-3 text-left">CC2 (40%)</th>
+                                    <th class="pb-3 text-left">Examen (60%)</th>
+                                    <th class="pb-3 text-left">Note Finale</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
+                            <tbody class="text-sm divide-y divide-white/5 text-gray-300">
                                 @foreach($students as $index => $student)
                                     @php
                                         $grade = $student->grades()->where('module_id', $module->id)->first();
                                     @endphp
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                    <tr class="hover:bg-white/[0.02] transition-colors">
+                                        <td class="py-4 font-semibold text-white whitespace-nowrap">
                                             {{ $student->user->name }}
                                             <input type="hidden" name="grades[{{ $index }}][student_id]" value="{{ $student->id }}">
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <input type="number" step="0.01" name="grades[{{ $index }}][cc1]" value="{{ $grade->cc1 ?? '' }}" class="w-20 border-gray-300 rounded-md">
+                                        <td class="py-4 whitespace-nowrap">
+                                            <input type="number" step="0.01" name="grades[{{ $index }}][cc1]" value="{{ $grade->cc1 ?? '' }}" class="w-24 bg-white/5 border border-white/10 text-white rounded-xl px-3 py-1.5 focus:border-[#8b5cf6] focus:ring-1 focus:ring-[#8b5cf6]">
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <input type="number" step="0.01" name="grades[{{ $index }}][cc2]" value="{{ $grade->cc2 ?? '' }}" class="w-20 border-gray-300 rounded-md">
+                                        <td class="py-4 whitespace-nowrap">
+                                            <input type="number" step="0.01" name="grades[{{ $index }}][cc2]" value="{{ $grade->cc2 ?? '' }}" class="w-24 bg-white/5 border border-white/10 text-white rounded-xl px-3 py-1.5 focus:border-[#8b5cf6] focus:ring-1 focus:ring-[#8b5cf6]">
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <input type="number" step="0.01" name="grades[{{ $index }}][exam]" value="{{ $grade->exam ?? '' }}" class="w-20 border-gray-300 rounded-md">
+                                        <td class="py-4 whitespace-nowrap">
+                                            <input type="number" step="0.01" name="grades[{{ $index }}][exam]" value="{{ $grade->exam ?? '' }}" class="w-24 bg-white/5 border border-white/10 text-white rounded-xl px-3 py-1.5 focus:border-[#8b5cf6] focus:ring-1 focus:ring-[#8b5cf6]">
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap font-bold">
+                                        <td class="py-4 whitespace-nowrap font-bold text-[#06b6d4]">
                                             {{ $grade->final_grade ?? '-' }}
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
 
-                        <div class="flex items-center justify-end mt-4">
-                            <x-primary-button>
-                                {{ __('Enregistrer les notes') }}
-                            </x-primary-button>
-                        </div>
-                    </form>
-                </div>
+                    <div class="flex items-center justify-end mt-6 pt-6 border-t border-white/5">
+                        <button type="submit" class="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-[#8b5cf6] to-[#d946ef] hover:opacity-90 text-white text-xs font-bold rounded-xl shadow-md transition duration-200">
+                            Enregistrer les notes
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

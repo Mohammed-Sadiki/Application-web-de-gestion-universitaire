@@ -1,10 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        <div>
-            <h2 class="font-bold text-2xl text-white leading-tight">
-                {{ __('Mes Notes') }}
-            </h2>
-            <div class="text-xs text-gray-400 mt-1">Suivi de vos evaluations et notes finales par module</div>
+        <div class="flex justify-between items-center w-full">
+            <div>
+                <div class="topbar-title">Mes Notes</div>
+                <div class="topbar-subtitle">Suivi de vos évaluations et notes finales par module</div>
+            </div>
         </div>
     </x-slot>
 

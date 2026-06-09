@@ -1,8 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-bold text-2xl text-white leading-tight">
-            {{ __('Administration Générale') }}
-        </h2>
+        <div class="topbar-title">Administration Générale</div>
+        <div class="topbar-subtitle">Vue d'ensemble et gestion des ressources de l'établissement</div>
     </x-slot>
 
     <div class="py-12 animate-fade-in">

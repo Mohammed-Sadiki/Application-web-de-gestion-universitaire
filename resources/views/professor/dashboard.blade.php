@@ -1,8 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-bold text-2xl text-white leading-tight">
-            {{ __('Espace Enseignant') }}
-        </h2>
+        <div class="flex justify-between items-center w-full">
+            <div>
+                <div class="topbar-title">Espace Enseignant</div>
+                <div class="topbar-subtitle">Suivi des cours, des absences et des notes</div>
+            </div>
+        </div>
     </x-slot>
 
     <div class="py-12 animate-fade-in">
