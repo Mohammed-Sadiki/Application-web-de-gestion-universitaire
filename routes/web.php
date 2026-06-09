@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
@@ -55,7 +55,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Professor Routes
     Route::middleware(['role:professor'])->prefix('professor')->name('professor.')->group(function () {
         Route::get('/dashboard', [App\Http\Controllers\Professor\DashboardController::class, 'index'])->name('dashboard');
-        
+
         // Grades
         Route::get('/grades', [App\Http\Controllers\Professor\GradeController::class, 'index'])->name('grades.index');
         Route::get('/grades/{module}/edit', [App\Http\Controllers\Professor\GradeController::class, 'edit'])->name('grades.edit');
@@ -91,7 +91,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Student Routes
     Route::middleware(['role:student'])->prefix('student')->name('student.')->group(function () {
         Route::get('/dashboard', [App\Http\Controllers\Student\DashboardController::class, 'index'])->name('dashboard');
-        
+
         // Grades
         Route::get('/grades', [App\Http\Controllers\Student\GradeController::class, 'index'])->name('grades.index');
 
@@ -119,4 +119,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
