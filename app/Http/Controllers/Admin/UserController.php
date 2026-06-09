@@ -45,7 +45,10 @@ class UserController extends Controller
         ]);
 
         if ($user->role === 'student') {
-            $user->student()->create();
+            $firstGroup = \App\Models\Group::first();
+            $user->student()->create([
+                'group_id' => $firstGroup ? $firstGroup->id : 1,
+            ]);
         } elseif ($user->role === 'professor') {
             $user->professor()->create();
         }
@@ -89,7 +92,12 @@ class UserController extends Controller
             if ($oldRole === 'professor') $user->professor()->delete();
 
             // Create new associations
-            if ($user->role === 'student') $user->student()->create();
+            if ($user->role === 'student') {
+                $firstGroup = \App\Models\Group::first();
+                $user->student()->create([
+                    'group_id' => $firstGroup ? $firstGroup->id : 1,
+                ]);
+            }
             if ($user->role === 'professor') $user->professor()->create();
         }
 
