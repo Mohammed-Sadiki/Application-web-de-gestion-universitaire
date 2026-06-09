@@ -297,9 +297,10 @@
 
     <!-- Chart Configuration Script -->
     <script>
-        // Chart defaults
-        Chart.defaults.color = '#64748b';
-        Chart.defaults.borderColor = 'rgba(255,255,255,0.05)';
+        // Theme detection
+        const isLightTheme = document.body.classList.contains('light-theme');
+        Chart.defaults.color = isLightTheme ? '#475569' : '#64748b';
+        Chart.defaults.borderColor = isLightTheme ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.05)';
 
         // ── LINE CHART ──
         const lineCtx = document.getElementById('lineChart').getContext('2d');
@@ -377,11 +378,11 @@
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: 'rgba(13,18,32,0.95)',
-                        borderColor: 'rgba(139,92,246,0.3)',
+                        backgroundColor: isLightTheme ? 'rgba(255,255,255,0.95)' : 'rgba(13,18,32,0.95)',
+                        borderColor: isLightTheme ? 'rgba(109,40,217,0.15)' : 'rgba(139,92,246,0.3)',
                         borderWidth: 1,
-                        titleColor: '#f1f5f9',
-                        bodyColor: '#94a3b8',
+                        titleColor: isLightTheme ? '#0f172a' : '#f1f5f9',
+                        bodyColor: isLightTheme ? '#334155' : '#94a3b8',
                         padding: 12,
                         cornerRadius: 10,
                         displayColors: true,
@@ -392,11 +393,11 @@
                 scales: {
                     x: {
                         grid: { display: false },
-                        ticks: { font: { size: 11 }, color: '#475569' }
+                        ticks: { font: { size: 11 }, color: isLightTheme ? '#475569' : '#64748b' }
                     },
                     y: {
-                        grid: { color: 'rgba(255,255,255,0.04)', drawBorder: false },
-                        ticks: { font: { size: 11 }, color: '#475569', stepSize: 1 },
+                        grid: { color: isLightTheme ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.04)', drawBorder: false },
+                        ticks: { font: { size: 11 }, color: isLightTheme ? '#475569' : '#64748b', stepSize: 1 },
                         min: 0,
                     }
                 },
@@ -429,11 +430,11 @@
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: 'rgba(13,18,32,0.95)',
-                        borderColor: 'rgba(139,92,246,0.3)',
+                        backgroundColor: isLightTheme ? 'rgba(255,255,255,0.95)' : 'rgba(13,18,32,0.95)',
+                        borderColor: isLightTheme ? 'rgba(109,40,217,0.15)' : 'rgba(139,92,246,0.3)',
                         borderWidth: 1,
-                        titleColor: '#f1f5f9',
-                        bodyColor: '#94a3b8',
+                        titleColor: isLightTheme ? '#0f172a' : '#f1f5f9',
+                        bodyColor: isLightTheme ? '#334155' : '#94a3b8',
                         padding: 10,
                         cornerRadius: 8,
                     }
@@ -498,7 +499,7 @@
                         position: 'top',
                         align: 'end',
                         labels: {
-                            color: '#64748b',
+                            color: isLightTheme ? '#475569' : '#64748b',
                             font: { size: 11, weight: '600' },
                             boxWidth: 10,
                             boxHeight: 10,
@@ -508,11 +509,11 @@
                         }
                     },
                     tooltip: {
-                        backgroundColor: 'rgba(13,18,32,0.95)',
-                        borderColor: 'rgba(139,92,246,0.3)',
+                        backgroundColor: isLightTheme ? 'rgba(255,255,255,0.95)' : 'rgba(13,18,32,0.95)',
+                        borderColor: isLightTheme ? 'rgba(109,40,217,0.15)' : 'rgba(139,92,246,0.3)',
                         borderWidth: 1,
-                        titleColor: '#f1f5f9',
-                        bodyColor: '#94a3b8',
+                        titleColor: isLightTheme ? '#0f172a' : '#f1f5f9',
+                        bodyColor: isLightTheme ? '#334155' : '#94a3b8',
                         padding: 12,
                         cornerRadius: 10,
                     }
@@ -521,12 +522,12 @@
                     x: {
                         stacked: false,
                         grid: { display: false },
-                        ticks: { font: { size: 11 }, color: '#475569' }
+                        ticks: { font: { size: 11 }, color: isLightTheme ? '#475569' : '#64748b' }
                     },
                     y: {
                         stacked: false,
-                        grid: { color: 'rgba(255,255,255,0.04)' },
-                        ticks: { font: { size: 11 }, color: '#475569', stepSize: 1 },
+                        grid: { color: isLightTheme ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.04)' },
+                        ticks: { font: { size: 11 }, color: isLightTheme ? '#475569' : '#64748b', stepSize: 1 },
                         min: 0,
                     }
                 },

@@ -20,7 +20,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <script>
-        if (localStorage.getItem('theme') === 'light') {
+        if (localStorage.getItem('theme') !== 'dark') {
             document.documentElement.classList.add('light-theme');
         }
     </script>
@@ -28,7 +28,7 @@
 
 <body class="font-sans antialiased text-gray-200 bg-[#070b14] overflow-hidden">
     <script>
-        if (localStorage.getItem('theme') === 'light') {
+        if (localStorage.getItem('theme') !== 'dark') {
             document.body.classList.add('light-theme');
         }
     </script>
@@ -473,19 +473,25 @@
                 </div>
 
                 <div class="topbar-right">
-                    <div class="topbar-search">
-                        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                            stroke-width="2">
-                            <circle cx="11" cy="11" r="8" />
-                            <path d="m21 21-4.35-4.35" />
+                    <!-- Languages: FR EN AR -->
+                    <div class="flex items-center gap-3 mr-3 text-xs font-bold tracking-wider">
+                        <a href="{{ route('set-locale', 'fr') }}" class="{{ app()->getLocale() == 'fr' ? 'text-[#8b5cf6] border-b-2 border-[#8b5cf6]' : 'text-gray-400 hover:text-[#8b5cf6]' }} pb-1 transition duration-150">FR</a>
+                        <a href="{{ route('set-locale', 'en') }}" class="{{ app()->getLocale() == 'en' ? 'text-[#8b5cf6] border-b-2 border-[#8b5cf6]' : 'text-gray-400 hover:text-[#8b5cf6]' }} pb-1 transition duration-150">EN</a>
+                        <a href="{{ route('set-locale', 'ar') }}" class="{{ app()->getLocale() == 'ar' ? 'text-[#8b5cf6] border-b-2 border-[#8b5cf6]' : 'text-gray-400 hover:text-[#8b5cf6]' }} pb-1 transition duration-150">AR</a>
+                    </div>
+
+                    <!-- Theme Toggle -->
+                    <button onclick="toggleTheme()" class="topbar-icon-btn" title="Toggle theme">
+                        <svg id="theme-icon-moon" class="hidden" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                         </svg>
-                        <input type="text" placeholder="Rechercher...">
-                    </div>
-                    <div class="time-badge">
-                        <span class="live-dot"
-                            style="width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; margin-right: 6px;"></span>
-                        <span id="live-time-topbar">{{ now()->format('H:i') }}</span>
-                    </div>
+                        <svg id="theme-icon-sun" class="hidden" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                        </svg>
+                    </button>
+
+                    <!-- Notifications -->
                     <div class="topbar-icon-btn">
                         <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                             stroke-width="2">
@@ -494,6 +500,8 @@
                         </svg>
                         <div class="notif-dot"></div>
                     </div>
+
+                    <!-- Logout -->
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="topbar-icon-btn" title="Déconnexion">
@@ -516,6 +524,33 @@
     </div>
 
     <script>
+        // Theme Management
+        function updateThemeIcons() {
+            const isLight = document.body.classList.contains('light-theme');
+            const moon = document.getElementById('theme-icon-moon');
+            const sun = document.getElementById('theme-icon-sun');
+            if (isLight) {
+                if (moon) moon.classList.remove('hidden');
+                if (sun) sun.classList.add('hidden');
+            } else {
+                if (moon) moon.classList.add('hidden');
+                if (sun) sun.classList.remove('hidden');
+            }
+        }
+
+        function toggleTheme() {
+            if (document.body.classList.contains('light-theme')) {
+                document.body.classList.remove('light-theme');
+                document.documentElement.classList.remove('light-theme');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.body.classList.add('light-theme');
+                document.documentElement.classList.add('light-theme');
+                localStorage.setItem('theme', 'light');
+            }
+            updateThemeIcons();
+        }
+
         // Live clock for topbar
         function updateTopbarTime() {
             const now = new Date();
@@ -524,7 +559,12 @@
             const el = document.getElementById('live-time-topbar');
             if (el) el.textContent = h + ':' + m;
         }
-        setInterval(updateTopbarTime, 1000);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateThemeIcons();
+            setInterval(updateTopbarTime, 1000);
+            updateTopbarTime();
+        });
     </script>
 </body>
 
