@@ -2,12 +2,12 @@
     <x-slot name="header">
         <div class="flex justify-between items-center w-full">
             <div>
-                <div class="topbar-title">{{ __('Gestion de l\'Emploi du Temps') }}</div>
-                <div class="topbar-subtitle">Gérez et visualisez l'ensemble des créneaux horaires</div>
+                <div class="topbar-title">{{ __('app.schedules_management') }}</div>
+                <div class="topbar-subtitle">{{ __('app.schedules_subtitle') }}</div>
             </div>
             <a href="{{ route('admin.schedules.create') }}"
                class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#8b5cf6] to-[#d946ef] hover:opacity-90 text-white text-xs font-bold rounded-xl shadow-md transition duration-200">
-                ➕ Ajouter une séance
+                ➕ {{ __('app.add_schedule') }}
             </a>
         </div>
     </x-slot>
@@ -15,23 +15,20 @@
     @php
         $dayKeys = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
         $dayMap  = [
-            'Monday'    => ['fr'=>'Lundi',    'abbr'=>'LUN'],
-            'Tuesday'   => ['fr'=>'Mardi',    'abbr'=>'MAR'],
-            'Wednesday' => ['fr'=>'Mercredi', 'abbr'=>'MER'],
-            'Thursday'  => ['fr'=>'Jeudi',    'abbr'=>'JEU'],
-            'Friday'    => ['fr'=>'Vendredi', 'abbr'=>'VEN'],
-            'Saturday'  => ['fr'=>'Samedi',   'abbr'=>'SAM'],
+            'Monday'    => ['label' => __('app.day_monday'), 'abbr' => __('app.day_monday')],
+            'Tuesday'   => ['label' => __('app.day_tuesday'), 'abbr' => __('app.day_tuesday')],
+            'Wednesday' => ['label' => __('app.day_wednesday'), 'abbr' => __('app.day_wednesday')],
+            'Thursday'  => ['label' => __('app.day_thursday'), 'abbr' => __('app.day_thursday')],
+            'Friday'    => ['label' => __('app.day_friday'), 'abbr' => __('app.day_friday')],
+            'Saturday'  => ['label' => __('app.day_saturday'), 'abbr' => __('app.day_saturday')],
         ];
+        $abbrMap = ['Monday'=>'LUN','Tuesday'=>'MAR','Wednesday'=>'MER','Thursday'=>'JEU','Friday'=>'VEN','Saturday'=>'SAM'];
 
         $palette = ['#8b5cf6','#06b6d4','#d946ef','#3b82f6','#10b981','#f59e0b','#ef4444','#ec4899'];
-
-        // Group by day
         $byDay = [];
         foreach ($dayKeys as $day) {
             $byDay[$day] = $schedules->where('day', $day)->sortBy('start_time')->values();
         }
-
-        // Stable color per module
         $moduleColors = []; $ci = 0;
         foreach ($dayKeys as $day) {
             foreach ($byDay[$day] as $s) {
@@ -39,14 +36,11 @@
                 if (!isset($moduleColors[$mid])) { $moduleColors[$mid] = $palette[$ci % count($palette)]; $ci++; }
             }
         }
-
-        // Week dates
         $today     = \Carbon\Carbon::now();
         $weekStart = $today->copy()->startOfWeek(\Carbon\Carbon::MONDAY);
         $dayOffsets = ['Monday'=>0,'Tuesday'=>1,'Wednesday'=>2,'Thursday'=>3,'Friday'=>4,'Saturday'=>5];
         $weekDates = [];
         foreach ($dayOffsets as $d => $offset) { $weekDates[$d] = $weekStart->copy()->addDays($offset); }
-
         $startHour = 8; $endHour = 19; $totalHours = $endHour - $startHour; $slotH = 56;
     @endphp
 
@@ -61,18 +55,14 @@
         {{-- View Toggle --}}
         <div class="flex items-center gap-2">
             <button @click="view = 'calendar'"
-                    :class="view==='calendar'
-                        ? 'bg-gradient-to-r from-[#8b5cf6] to-[#d946ef] text-white shadow-lg'
-                        : 'bg-white/5 border border-white/10 text-gray-400 hover:text-white'"
+                    :class="view==='calendar' ? 'bg-gradient-to-r from-[#8b5cf6] to-[#d946ef] text-white shadow-lg' : 'bg-white/5 border border-white/10 text-gray-400 hover:text-white'"
                     class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200">
-                📅 Vue Calendrier
+                📅 {{ __('app.schedules_management') }}
             </button>
             <button @click="view = 'table'"
-                    :class="view==='table'
-                        ? 'bg-gradient-to-r from-[#8b5cf6] to-[#d946ef] text-white shadow-lg'
-                        : 'bg-white/5 border border-white/10 text-gray-400 hover:text-white'"
+                    :class="view==='table' ? 'bg-gradient-to-r from-[#8b5cf6] to-[#d946ef] text-white shadow-lg' : 'bg-white/5 border border-white/10 text-gray-400 hover:text-white'"
                     class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200">
-                📋 Vue Liste
+                📋 {{ __('app.schedules_list') }}
             </button>
         </div>
 
@@ -80,7 +70,6 @@
         <div x-show="view === 'calendar'" x-transition:enter="transition ease-out duration-200"
              x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0">
 
-            {{-- Legend header --}}
             <div class="dark-card rounded-3xl border border-white/5 mb-4 px-6 py-4 flex flex-wrap items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
                     <span class="text-2xl">📅</span>
@@ -89,7 +78,7 @@
                             {{ $weekStart->translatedFormat('d') }} –
                             {{ $weekStart->copy()->addDays(5)->translatedFormat('d M Y') }}
                         </div>
-                        <div class="text-xs text-gray-400">Semaine de référence</div>
+                        <div class="text-xs text-gray-400">{{ __('app.schedule_subtitle') }}</div>
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-2">
@@ -108,9 +97,7 @@
                 </div>
             </div>
 
-            {{-- Grid --}}
             <div class="dark-card rounded-3xl border border-white/5 overflow-hidden">
-                {{-- Day headers --}}
                 <div class="grid border-b border-white/10 sticky top-0 z-10 bg-[#0d1220]"
                      style="grid-template-columns: 64px repeat(6, 1fr);">
                     <div class="border-r border-white/5"></div>
@@ -118,7 +105,7 @@
                         @php $date = $weekDates[$day]; $isToday = $date->isToday(); @endphp
                         <div class="py-3 px-2 text-center border-r border-white/5 last:border-r-0 {{ $isToday ? 'bg-[#8b5cf6]/10' : '' }}">
                             <div class="text-[9px] font-bold text-gray-500 uppercase tracking-widest">
-                                {{ $dayMap[$day]['abbr'] }} · {{ $date->format('d/m') }}
+                                {{ $abbrMap[$day] }} · {{ $date->format('d/m') }}
                             </div>
                             <div class="text-lg font-black mt-0.5 {{ $isToday ? 'text-[#8b5cf6]' : 'text-white' }}">
                                 {{ $date->format('d') }}
@@ -130,9 +117,7 @@
                     @endforeach
                 </div>
 
-                {{-- Time + Events --}}
                 <div class="grid overflow-y-auto" style="grid-template-columns: 64px repeat(6, 1fr); max-height: 640px;">
-                    {{-- Hour labels --}}
                     <div class="border-r border-white/5 bg-[#0d1220]">
                         @for($h = $startHour; $h <= $endHour; $h++)
                             <div class="flex items-start justify-center text-[10px] text-gray-600 font-bold border-b border-white/[0.04]"
@@ -149,10 +134,6 @@
                                 <div class="absolute left-0 right-0 border-t {{ $h===0 ? 'border-white/10' : 'border-white/[0.04]' }}"
                                      style="top:{{ $h * $slotH }}px;"></div>
                             @endfor
-                            @for($h = 0; $h < $totalHours; $h++)
-                                <div class="absolute left-0 right-0 border-t border-dashed border-white/[0.025]"
-                                     style="top:{{ $h * $slotH + $slotH/2 }}px;"></div>
-                            @endfor
                             @if($weekDates[$day]->isToday())
                                 <div class="absolute inset-0 bg-[#8b5cf6]/[0.03] pointer-events-none"></div>
                             @endif
@@ -167,8 +148,7 @@
                                     $heightPx = max(32,(($endMin-$startMin)/60)*$slotH - 4);
                                     $color    = $moduleColors[$schedule->module_id] ?? '#8b5cf6';
                                 @endphp
-                                <div class="absolute left-1 right-1 rounded-xl overflow-hidden group cursor-pointer z-10
-                                            transition-all duration-200 hover:scale-[1.02] hover:z-30 hover:shadow-2xl"
+                                <div class="absolute left-1 right-1 rounded-xl overflow-hidden group cursor-pointer z-10 transition-all duration-200 hover:scale-[1.02] hover:z-30 hover:shadow-2xl"
                                      style="top:{{ $topPx+2 }}px; height:{{ $heightPx }}px;
                                             background: linear-gradient(135deg, {{ $color }}dd 0%, {{ $color }}88 100%);
                                             border-left: 3px solid {{ $color }};
@@ -214,39 +194,35 @@
                 <div class="p-6 bg-[#17192a]/30 border-b border-white/5 flex items-center justify-between">
                     <h3 class="text-base font-bold text-white flex items-center gap-2">
                         <span class="w-2.5 h-2.5 bg-[#8b5cf6] rounded-full animate-pulse"></span>
-                        Liste de toutes les séances planifiées
+                        {{ __('app.schedules_list') }}
                     </h3>
-                    <span class="text-xs text-gray-400 font-semibold">{{ $schedules->count() }} séance(s)</span>
+                    <span class="text-xs text-gray-400 font-semibold">{{ $schedules->count() }} {{ __('app.sessions') }}</span>
                 </div>
                 <div class="p-6">
                     @if($schedules->isEmpty())
-                        <p class="text-gray-400 italic text-center py-6">Aucune séance planifiée.</p>
+                        <p class="text-gray-400 italic text-center py-6">{{ __('app.no_schedules') }}</p>
                     @else
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-white/5">
                                 <thead>
                                     <tr class="text-left text-xs font-bold text-gray-400 uppercase tracking-wider">
-                                        <th class="pb-3">Jour</th>
-                                        <th class="pb-3">Créneau</th>
-                                        <th class="pb-3">Groupe</th>
-                                        <th class="pb-3">Module</th>
-                                        <th class="pb-3">Professeur</th>
-                                        <th class="pb-3">Salle</th>
-                                        <th class="pb-3 text-right">Actions</th>
+                                        <th class="pb-3">{{ __('app.day') }}</th>
+                                        <th class="pb-3">{{ __('app.time') }}</th>
+                                        <th class="pb-3">{{ __('app.group') }}</th>
+                                        <th class="pb-3">{{ __('app.module') }}</th>
+                                        <th class="pb-3">{{ __('app.professor_section') }}</th>
+                                        <th class="pb-3">{{ __('app.room') }}</th>
+                                        <th class="pb-3 text-right">{{ __('app.actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody class="text-sm divide-y divide-white/5 text-gray-300">
-                                    @php
-                                        $dayFr = ['Monday'=>'Lundi','Tuesday'=>'Mardi','Wednesday'=>'Mercredi',
-                                                  'Thursday'=>'Jeudi','Friday'=>'Vendredi','Saturday'=>'Samedi'];
-                                    @endphp
                                     @foreach($schedules->sortBy([['day','asc'],['start_time','asc']]) as $schedule)
                                         @php $color = $moduleColors[$schedule->module_id] ?? '#8b5cf6'; @endphp
                                         <tr class="hover:bg-white/[0.02] transition-colors">
                                             <td class="py-3.5">
                                                 <span class="px-2.5 py-1 rounded-full text-xs font-bold"
                                                       style="background:{{ $color }}15;color:{{ $color }};border:1px solid {{ $color }}30;">
-                                                    {{ $dayFr[$schedule->day] ?? $schedule->day }}
+                                                    {{ __('app.day_' . strtolower($schedule->day)) }}
                                                 </span>
                                             </td>
                                             <td class="py-3.5">
@@ -261,13 +237,13 @@
                                             <td class="py-3.5 text-right space-x-2">
                                                 <a href="{{ route('admin.schedules.edit', $schedule) }}"
                                                    class="inline-flex items-center px-3 py-1 bg-[#8b5cf6]/10 hover:bg-[#8b5cf6]/20 border border-[#8b5cf6]/20 text-[#8b5cf6] text-xs font-bold rounded-xl transition">
-                                                    ✏️ Modifier
+                                                    ✏️ {{ __('app.edit') }}
                                                 </a>
                                                 <form action="{{ route('admin.schedules.destroy', $schedule) }}" method="POST" class="inline">
                                                     @csrf @method('DELETE')
-                                                    <button type="submit" onclick="return confirm('Supprimer cette séance ?')"
+                                                    <button type="submit" onclick="return confirm('{{ __('app.confirm_delete') }}')"
                                                             class="inline-flex items-center px-3 py-1 bg-[#d946ef]/10 hover:bg-[#d946ef]/20 border border-[#d946ef]/20 text-[#d946ef] text-xs font-bold rounded-xl transition">
-                                                        🗑️ Supprimer
+                                                        🗑️ {{ __('app.delete') }}
                                                     </button>
                                                 </form>
                                             </td>

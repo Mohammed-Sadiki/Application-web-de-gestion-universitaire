@@ -2,8 +2,8 @@
     <x-slot name="header">
         <div class="flex justify-between items-center w-full">
             <div>
-                <div class="topbar-title">Demandes de Documents</div>
-                <div class="topbar-subtitle">Gérez et validez les documents demandés par les étudiants</div>
+                <div class="topbar-title">{{ __('app.professor_documents') }}</div>
+                <div class="topbar-subtitle">{{ __('app.documents_subtitle') }}</div>
             </div>
         </div>
     </x-slot>
@@ -37,24 +37,24 @@
             <div class="p-6 bg-[#17192a]/30 border-b border-white/5">
                 <h3 class="text-lg font-bold text-white flex items-center gap-2">
                     <span class="w-2.5 h-2.5 bg-[#8b5cf6] rounded-full animate-pulse"></span>
-                    Demandes en attente de document
+                    {{ __('app.pending_requests') }}
                 </h3>
             </div>
             <div class="p-6">
                 @if($requests->isEmpty())
                     <div class="text-center py-12">
                         <span class="text-5xl">🎉</span>
-                        <p class="text-gray-400 italic mt-4 text-sm">Aucune demande en attente de document.</p>
+                        <p class="text-gray-400 italic mt-4 text-sm">{{ __('app.no_pending_requests') }}</p>
                     </div>
                 @else
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-white/5">
                             <thead>
                                 <tr class="text-left text-xs font-bold text-gray-400 uppercase tracking-wider">
-                                    <th class="pb-3 text-left">Étudiant</th>
-                                    <th class="pb-3 text-left">Type de document</th>
-                                    <th class="pb-3 text-left">Date de demande</th>
-                                    <th class="pb-3 text-right">Actions</th>
+                                    <th class="pb-3 text-left">{{ __('app.student') }}</th>
+                                    <th class="pb-3 text-left">{{ __('app.request_type_lbl') }}</th>
+                                    <th class="pb-3 text-left">{{ __('app.date') }}</th>
+                                    <th class="pb-3 text-right">{{ __('app.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody class="text-sm divide-y divide-white/5 text-gray-300">
@@ -73,7 +73,7 @@
                                             <button type="button"
                                                     @click="openUploadModal('{{ route('professor.documents.upload', $req) }}', '{{ addslashes($req->user->name) }}', '{{ addslashes($req->type) }}')"
                                                     class="inline-flex items-center gap-1.5 px-3 py-1 bg-[#06b6d4]/10 hover:bg-[#06b6d4]/20 border border-[#06b6d4]/20 text-[#06b6d4] text-xs font-bold rounded-xl transition cursor-pointer">
-                                                📤 Téléverser le document
+                                                📤 {{ __('app.upload') }}
                                             </button>
                                         </td>
                                     </tr>
@@ -92,7 +92,7 @@
                     
                     <h2 class="text-lg font-bold text-white mb-2 flex items-center">
                         <span class="w-2.5 h-2.5 bg-[#06b6d4] rounded-full mr-2 animate-pulse"></span>
-                        Ajouter le document finalisé
+                        {{ __('app.upload_material') }}
                     </h2>
                     
                     <p class="text-sm text-gray-400 mb-6">
@@ -102,7 +102,7 @@
                     <!-- Document Upload Input -->
                     <div class="mb-6">
                         <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2" for="document">
-                            Sélectionner le fichier (Requis)
+                            {{ __('app.material_file_lbl') }}
                         </label>
                         <div class="relative group">
                             <input type="file" name="document" id="document" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" required
@@ -116,11 +116,11 @@
                     <div class="flex justify-end space-x-3 border-t border-white/5 pt-4">
                         <button type="button" @click="$dispatch('close-modal', 'upload-document-modal')"
                                 class="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-4 py-2 rounded-xl text-xs font-bold transition">
-                            Annuler
+                            {{ __('app.cancel') }}
                         </button>
                         <button type="submit"
                                 class="bg-[#06b6d4]/90 hover:bg-[#06b6d4] text-black px-4 py-2 rounded-xl text-xs font-bold transition">
-                            Valider la demande
+                            {{ __('app.validate') }}
                         </button>
                     </div>
                 </form>

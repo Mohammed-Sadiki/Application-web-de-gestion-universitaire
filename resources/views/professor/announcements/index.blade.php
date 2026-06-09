@@ -2,12 +2,12 @@
     <x-slot name="header">
         <div class="flex justify-between items-center w-full">
             <div>
-                <div class="topbar-title">Mes Annonces</div>
-                <div class="topbar-subtitle">Communiquez des informations importantes et des actualités à vos étudiants</div>
+                <div class="topbar-title">{{ __('app.announcements_title') }}</div>
+                <div class="topbar-subtitle">{{ __('app.announcements_subtitle') }}</div>
             </div>
             <a href="{{ route('professor.announcements.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#8b5cf6] to-[#d946ef] hover:opacity-90 text-white text-xs font-bold rounded-xl shadow-md transition duration-200">
                 <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Nouvelle Annonce
+                {{ __('app.new_announcement') }}
             </a>
         </div>
     </x-slot>
@@ -23,12 +23,12 @@
             <div class="p-6 bg-[#17192a]/30 border-b border-white/5">
                 <h3 class="text-lg font-bold text-white flex items-center gap-2">
                     <span class="w-2.5 h-2.5 bg-[#8b5cf6] rounded-full animate-pulse"></span>
-                    Liste de vos annonces publiées
+                    {{ __('app.my_announcements') }}
                 </h3>
             </div>
             <div class="p-6">
                 @if($announcements->isEmpty())
-                    <p class="text-gray-400 italic text-center py-6">Aucune annonce publiée pour le moment.</p>
+                    <p class="text-gray-400 italic text-center py-6">{{ __('app.no_announcements') }}</p>
                 @else
                     <div class="space-y-6">
                         @foreach($announcements as $announcement)
@@ -39,14 +39,14 @@
                                             {{ $announcement->module->name }}
                                         </span>
                                         <span class="text-xs text-gray-400">
-                                            Publiée le {{ $announcement->created_at->format('d/m/Y à H:i') }}
+                                            {{ $announcement->created_at->translatedFormat('d M Y H:i') }}
                                         </span>
                                     </div>
-                                    <form method="POST" action="{{ route('professor.announcements.destroy', $announcement) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette annonce ?');" class="inline">
+                                    <form method="POST" action="{{ route('professor.announcements.destroy', $announcement) }}" onsubmit="return confirm('{{ __('app.confirm_delete') }}');" class="inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="inline-flex items-center px-3 py-1 bg-[#d946ef]/10 hover:bg-[#d946ef]/20 border border-[#d946ef]/20 text-[#d946ef] text-xs font-bold rounded-xl transition">
-                                            Supprimer
+                                            {{ __('app.delete') }}
                                         </button>
                                     </form>
                                 </div>

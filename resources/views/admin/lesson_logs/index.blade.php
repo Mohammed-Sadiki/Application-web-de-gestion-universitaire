@@ -1,7 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="topbar-title">Cahiers de Textes Globaux</div>
-        <div class="topbar-subtitle">Consultez les cours, TD et TP déclarés par les professeurs</div>
+        <div class="flex justify-between items-center w-full">
+            <div>
+                <div class="topbar-title">{{ __('app.lesson_logs_admin_title') }}</div>
+                <div class="topbar-subtitle">{{ __('app.lesson_logs_admin_sub') }}</div>
+            </div>
+        </div>
     </x-slot>
 
     <div class="py-6 animate-fade-in">
@@ -9,26 +13,26 @@
             <div class="p-6 bg-[#17192a]/30 border-b border-white/5">
                 <h3 class="text-lg font-bold text-white flex items-center gap-2">
                     <span class="w-2.5 h-2.5 bg-[#8b5cf6] rounded-full animate-pulse"></span>
-                    Registre des séances déclarées
+                    {{ __('app.lesson_log_register') }}
                 </h3>
             </div>
             <div class="p-6">
                 @if($logs->isEmpty())
                     <div class="text-center py-10">
                         <span class="text-4xl">📋</span>
-                        <p class="text-gray-400 italic mt-3 text-sm">Aucun compte-rendu de cours disponible pour le moment.</p>
+                        <p class="text-gray-400 italic mt-3 text-sm">{{ __('app.no_lesson_logs_admin') }}</p>
                     </div>
                 @else
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-white/5">
                         <thead>
                             <tr class="text-left text-xs font-bold text-gray-400 uppercase tracking-wider">
-                                <th class="pb-3">Date</th>
-                                <th class="pb-3">Professeur</th>
-                                <th class="pb-3">Module</th>
-                                <th class="pb-3">Type</th>
-                                <th class="pb-3">Créneau</th>
-                                <th class="pb-3">Objectif</th>
+                                <th class="pb-3">{{ __('app.date') }}</th>
+                                <th class="pb-3">{{ __('app.professor_section') }}</th>
+                                <th class="pb-3">{{ __('app.module') }}</th>
+                                <th class="pb-3">{{ __('app.type') }}</th>
+                                <th class="pb-3">{{ __('app.time') }}</th>
+                                <th class="pb-3">{{ __('app.objective') }}</th>
                             </tr>
                         </thead>
                         <tbody class="text-sm divide-y divide-white/5 text-gray-300">

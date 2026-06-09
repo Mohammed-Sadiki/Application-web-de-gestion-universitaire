@@ -17,34 +17,34 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     @if(auth()->user()->isAdmin())
                         <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
-                            {{ __('Admin Dashboard') }}
+                            {{ __('app.dashboard') }}
                         </x-nav-link>
                         <x-nav-link :href="route('crm.dashboard')" :active="request()->routeIs('crm.dashboard')">
-                            {{ __('CRM Dashboard') }}
+                            {{ __('app.crm_dashboard') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')"> {{ __('Utilisateurs') }} </x-nav-link>
-                        <x-nav-link :href="route('admin.departments.index')" :active="request()->routeIs('admin.departments.*')"> {{ __('Filières') }} </x-nav-link>
-                        <x-nav-link :href="route('admin.groups.index')" :active="request()->routeIs('admin.groups.*')"> {{ __('Groupes') }} </x-nav-link>
-                        <x-nav-link :href="route('admin.modules.index')" :active="request()->routeIs('admin.modules.*')"> {{ __('Modules') }} </x-nav-link>
-                        <x-nav-link :href="route('admin.rooms.index')" :active="request()->routeIs('admin.rooms.*')"> {{ __('Salles') }} </x-nav-link>
-                        <x-nav-link :href="route('admin.schedules.index')" :active="request()->routeIs('admin.schedules.*')"> {{ __('EDT') }} </x-nav-link>
-                        <x-nav-link :href="route('admin.absences.index')" :active="request()->routeIs('admin.absences.*')"> {{ __('Absences') }} </x-nav-link>
-                        <x-nav-link :href="route('admin.lesson_logs.index')" :active="request()->routeIs('admin.lesson_logs.*')"> {{ __('Cahiers') }} </x-nav-link>
-                        <x-nav-link :href="route('admin.reservations.index')" :active="request()->routeIs('admin.reservations.*')"> {{ __('Réservations') }} </x-nav-link>
+                        <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')"> {{ __('app.users') }} </x-nav-link>
+                        <x-nav-link :href="route('admin.departments.index')" :active="request()->routeIs('admin.departments.*')"> {{ __('app.departments') }} </x-nav-link>
+                        <x-nav-link :href="route('admin.groups.index')" :active="request()->routeIs('admin.groups.*')"> {{ __('app.groups') }} </x-nav-link>
+                        <x-nav-link :href="route('admin.modules.index')" :active="request()->routeIs('admin.modules.*')"> {{ __('app.modules') }} </x-nav-link>
+                        <x-nav-link :href="route('admin.rooms.index')" :active="request()->routeIs('admin.rooms.*')"> {{ __('app.rooms') }} </x-nav-link>
+                        <x-nav-link :href="route('admin.schedules.index')" :active="request()->routeIs('admin.schedules.*')"> {{ __('app.schedules') }} </x-nav-link>
+                        <x-nav-link :href="route('admin.absences.index')" :active="request()->routeIs('admin.absences.*')"> {{ __('app.absences') }} </x-nav-link>
+                        <x-nav-link :href="route('admin.lesson_logs.index')" :active="request()->routeIs('admin.lesson_logs.*')"> {{ __('app.lesson_logs') }} </x-nav-link>
+                        <x-nav-link :href="route('admin.reservations.index')" :active="request()->routeIs('admin.reservations.*')"> {{ __('app.reservations') }} </x-nav-link>
                     @elseif(auth()->user()->isProfessor())
                         <x-nav-link :href="route('professor.dashboard')" :active="request()->routeIs('professor.dashboard')">
-                            {{ __('Prof Dashboard') }}
+                            {{ __('app.dashboard') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('professor.grades.index')" :active="request()->routeIs('professor.grades.*')"> {{ __('Mes Notes') }} </x-nav-link>
-                        <x-nav-link :href="route('professor.absences.index')" :active="request()->routeIs('professor.absences.*')"> {{ __('Absences') }} </x-nav-link>
-                        <x-nav-link :href="route('professor.lesson_logs.index')" :active="request()->routeIs('professor.lesson_logs.*')"> {{ __('Cahier de textes') }} </x-nav-link>
-                        <x-nav-link :href="route('professor.materials.index')" :active="request()->routeIs('professor.materials.*')"> {{ __('Supports') }} </x-nav-link>
-                        <x-nav-link :href="route('professor.announcements.index')" :active="request()->routeIs('professor.announcements.*')"> {{ __('Annonces') }} </x-nav-link>
-                        <x-nav-link :href="route('professor.reservations.index')" :active="request()->routeIs('professor.reservations.*')"> {{ __('Réservations') }} </x-nav-link>
-                        <x-nav-link :href="route('professor.schedules.index')" :active="request()->routeIs('professor.schedules.*')"> {{ __('Mon EDT') }} </x-nav-link>
-                        <x-nav-link :href="route('professor.requests.index')" :active="request()->routeIs('professor.requests.*')"> {{ __('Mes Demandes') }} </x-nav-link>
+                        <x-nav-link :href="route('professor.grades.index')" :active="request()->routeIs('professor.grades.*')"> {{ __('app.my_grades') }} </x-nav-link>
+                        <x-nav-link :href="route('professor.absences.index')" :active="request()->routeIs('professor.absences.*')"> {{ __('app.absences') }} </x-nav-link>
+                        <x-nav-link :href="route('professor.lesson_logs.index')" :active="request()->routeIs('professor.lesson_logs.*')"> {{ __('app.lesson_log') }} </x-nav-link>
+                        <x-nav-link :href="route('professor.materials.index')" :active="request()->routeIs('professor.materials.*')"> {{ __('app.materials') }} </x-nav-link>
+                        <x-nav-link :href="route('professor.announcements.index')" :active="request()->routeIs('professor.announcements.*')"> {{ __('app.announcements') }} </x-nav-link>
+                        <x-nav-link :href="route('professor.reservations.index')" :active="request()->routeIs('professor.reservations.*')"> {{ __('app.reservations') }} </x-nav-link>
+                        <x-nav-link :href="route('professor.schedules.index')" :active="request()->routeIs('professor.schedules.*')"> {{ __('app.my_schedule') }} </x-nav-link>
+                        <x-nav-link :href="route('professor.requests.index')" :active="request()->routeIs('professor.requests.*')"> {{ __('app.my_requests') }} </x-nav-link>
                         <x-nav-link :href="route('professor.documents.index')" :active="request()->routeIs('professor.documents.*')">
-                            {{ __('Demandes de documents') }}
+                            {{ __('app.professor_documents') }}
                             @php
                                 $pendingDocRequestsCount = \App\Models\AdministrativeRequest::where('status', 'transferred')
                                     ->where('professor_id', auth()->user()->professor?->id)
@@ -56,13 +56,13 @@
                         </x-nav-link>
                     @elseif(auth()->user()->isStudent())
                         <x-nav-link :href="route('student.dashboard')" :active="request()->routeIs('student.dashboard')">
-                            {{ __('Mon Espace') }}
+                            {{ __('app.my_space') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('student.grades.index')" :active="request()->routeIs('student.grades.*')"> {{ __('Mes Notes') }} </x-nav-link>
-                        <x-nav-link :href="route('student.absences.index')" :active="request()->routeIs('student.absences.*')"> {{ __('Absences') }} </x-nav-link>
-                        <x-nav-link :href="route('student.schedules.index')" :active="request()->routeIs('student.schedules.*')"> {{ __('EDT') }} </x-nav-link>
-                        <x-nav-link :href="route('courses.index')" :active="request()->routeIs('courses.*')"> {{ __('Classroom') }} </x-nav-link>
-                        <x-nav-link :href="route('student.requests.index')" :active="request()->routeIs('student.requests.*')"> {{ __('Demandes') }} </x-nav-link>
+                        <x-nav-link :href="route('student.grades.index')" :active="request()->routeIs('student.grades.*')"> {{ __('app.my_grades') }} </x-nav-link>
+                        <x-nav-link :href="route('student.absences.index')" :active="request()->routeIs('student.absences.*')"> {{ __('app.absences') }} </x-nav-link>
+                        <x-nav-link :href="route('student.schedules.index')" :active="request()->routeIs('student.schedules.*')"> {{ __('app.my_schedule') }} </x-nav-link>
+                        <x-nav-link :href="route('courses.index')" :active="request()->routeIs('courses.*')"> {{ __('app.classroom') }} </x-nav-link>
+                        <x-nav-link :href="route('student.requests.index')" :active="request()->routeIs('student.requests.*')"> {{ __('app.requests') }} </x-nav-link>
                     @endif
                 </div>
             </div>
@@ -84,7 +84,7 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                            {{ __('app.profile') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->
@@ -94,7 +94,7 @@
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                                {{ __('app.logout') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -118,21 +118,21 @@
         <div class="pt-2 pb-3 space-y-1">
             @if(auth()->user()->isAdmin())
                 <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
-                    {{ __('Admin Dashboard') }}
+                    {{ __('app.dashboard') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('crm.dashboard')" :active="request()->routeIs('crm.dashboard')">
-                    {{ __('CRM Dashboard') }}
+                    {{ __('app.crm_dashboard') }}
                 </x-responsive-nav-link>
             @elseif(auth()->user()->isProfessor())
                 <x-responsive-nav-link :href="route('professor.dashboard')" :active="request()->routeIs('professor.dashboard')">
-                    {{ __('Prof Dashboard') }}
+                    {{ __('app.dashboard') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('professor.documents.index')" :active="request()->routeIs('professor.documents.*')">
-                    {{ __('Demandes de documents') }}
+                    {{ __('app.professor_documents') }}
                 </x-responsive-nav-link>
             @elseif(auth()->user()->isStudent())
                 <x-responsive-nav-link :href="route('student.dashboard')" :active="request()->routeIs('student.dashboard')">
-                    {{ __('Mon Espace') }}
+                    {{ __('app.my_space') }}
                 </x-responsive-nav-link>
             @endif
         </div>
@@ -146,7 +146,7 @@
 
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
+                    {{ __('app.profile') }}
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->
@@ -156,7 +156,7 @@
                     <x-responsive-nav-link :href="route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        {{ __('app.logout') }}
                     </x-responsive-nav-link>
                 </form>
             </div>

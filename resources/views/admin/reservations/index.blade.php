@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="topbar-title">Gestion des Réservations</div>
-        <div class="topbar-subtitle">Supervisez toutes les réservations de salles de l'établissement</div>
+        <div class="topbar-title">{{ __('app.reservations_management') }}</div>
+        <div class="topbar-subtitle">{{ __('app.reservations_mgmt_sub') }}</div>
     </x-slot>
 
     <div class="py-6 animate-fade-in">
@@ -13,26 +13,26 @@
             <div class="p-6 bg-[#17192a]/30 border-b border-white/5">
                 <h3 class="text-lg font-bold text-white flex items-center gap-2">
                     <span class="w-2.5 h-2.5 bg-[#3b82f6] rounded-full animate-pulse"></span>
-                    Toutes les réservations de salles
+                    {{ __('app.all_reservations') }}
                 </h3>
             </div>
             <div class="p-6">
                 @if($reservations->isEmpty())
                     <div class="text-center py-10">
                         <span class="text-4xl">🏫</span>
-                        <p class="text-gray-400 italic mt-3 text-sm">Aucune réservation de salle pour le moment.</p>
+                        <p class="text-gray-400 italic mt-3 text-sm">{{ __('app.no_reservations_admin') }}</p>
                     </div>
                 @else
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-white/5">
                         <thead>
                             <tr class="text-left text-xs font-bold text-gray-400 uppercase tracking-wider">
-                                <th class="pb-3">Salle</th>
-                                <th class="pb-3">Professeur</th>
-                                <th class="pb-3">Date</th>
-                                <th class="pb-3">Créneau</th>
-                                <th class="pb-3">Motif</th>
-                                <th class="pb-3 text-right">Actions</th>
+                                <th class="pb-3">{{ __('app.room') }}</th>
+                                <th class="pb-3">{{ __('app.professor_section') }}</th>
+                                <th class="pb-3">{{ __('app.date') }}</th>
+                                <th class="pb-3">{{ __('app.time') }}</th>
+                                <th class="pb-3">{{ __('app.reason') }}</th>
+                                <th class="pb-3 text-right">{{ __('app.actions') }}</th>
                             </tr>
                         </thead>
                         <tbody class="text-sm divide-y divide-white/5 text-gray-300">
@@ -48,11 +48,11 @@
                                 </td>
                                 <td class="py-4 text-gray-400 max-w-xs truncate">{{ $reservation->reason ?? '—' }}</td>
                                 <td class="py-4 text-right space-x-2 whitespace-nowrap">
-                                    <a href="{{ route('admin.reservations.edit', $reservation) }}" class="inline-flex items-center px-3 py-1 bg-[#8b5cf6]/10 hover:bg-[#8b5cf6]/20 border border-[#8b5cf6]/20 text-[#8b5cf6] text-xs font-bold rounded-xl transition">Modifier</a>
-                                    <form method="POST" action="{{ route('admin.reservations.destroy', $reservation) }}" class="inline" onsubmit="return confirm('Annuler cette réservation ?')">
+                                    <a href="{{ route('admin.reservations.edit', $reservation) }}" class="inline-flex items-center px-3 py-1 bg-[#8b5cf6]/10 hover:bg-[#8b5cf6]/20 border border-[#8b5cf6]/20 text-[#8b5cf6] text-xs font-bold rounded-xl transition">{{ __('app.edit') }}</a>
+                                    <form method="POST" action="{{ route('admin.reservations.destroy', $reservation) }}" class="inline" onsubmit="return confirm('{{ __('app.confirm_delete') }}')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="inline-flex items-center px-3 py-1 bg-[#d946ef]/10 hover:bg-[#d946ef]/20 border border-[#d946ef]/20 text-[#d946ef] text-xs font-bold rounded-xl transition">Annuler</button>
+                                        <button type="submit" class="inline-flex items-center px-3 py-1 bg-[#d946ef]/10 hover:bg-[#d946ef]/20 border border-[#d946ef]/20 text-[#d946ef] text-xs font-bold rounded-xl transition">{{ __('app.cancel') }}</button>
                                     </form>
                                 </td>
                             </tr>

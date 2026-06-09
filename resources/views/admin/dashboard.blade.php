@@ -12,7 +12,17 @@
                 </div>
             </div>
         @endif
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" x-data="{
+            openValidationModal(actionUrl, userName, requestType) {
+                this.action = actionUrl;
+                this.userName = userName;
+                this.requestType = requestType;
+                $dispatch('open-modal', 'validate-document-modal');
+            },
+            action: '',
+            userName: '',
+            requestType: ''
+        }">
             <!-- Stats Grid -->
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5 mb-10">
                 @foreach($stats as $key => $value)
@@ -38,17 +48,7 @@
             </div>
 
             <!-- Content Panel -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8" x-data="{
-                openValidationModal(actionUrl, userName, requestType) {
-                    this.action = actionUrl;
-                    this.userName = userName;
-                    this.requestType = requestType;
-                    $dispatch('open-modal', 'validate-document-modal');
-                },
-                action: '',
-                userName: '',
-                requestType: ''
-            }">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- Left area: Pending Requests Table -->
                 <div class="lg:col-span-2 space-y-6">
                     <div class="dark-card rounded-3xl overflow-hidden border border-white/5">
@@ -85,7 +85,7 @@
                                                     </td>
                                                     <td class="py-4 text-right space-x-2">
                                                         <button type="button" 
-                                                                @click="openValidationModal('{{ route('admin.requests.validate', $req) }}', '{{ addslashes($req->user->name) }}', '{{ addslashes($req->type) }}')"
+                                                                @click="openValidationModal('{{ route('admin.requests.upload', $req) }}', '{{ addslashes($req->user->name) }}', '{{ addslashes($req->type) }}')"
                                                                 class="bg-[#06b6d4]/10 hover:bg-[#06b6d4]/20 border border-[#06b6d4]/20 text-[#06b6d4] px-3 py-1 rounded-xl text-xs font-bold transition">
                                                             {{ __('app.validate') }}
                                                         </button>
@@ -128,10 +128,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Modal for Document Upload/Validation -->
     <x-modal name="validate-document-modal" focusable>
         <div class="p-8">
@@ -144,7 +140,6 @@
 
             <form method="post" :action="action" enctype="multipart/form-data">
                 @csrf
-                @method('PATCH')
                 <input type="hidden" name="status" value="approved">
 
                 <div class="space-y-4">
@@ -168,4 +163,6 @@
             </form>
         </div>
     </x-modal>
+        </div>
+    </div>
 </x-app-layout>

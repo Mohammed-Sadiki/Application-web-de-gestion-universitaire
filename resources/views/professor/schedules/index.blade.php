@@ -2,20 +2,20 @@
     <x-slot name="header">
         <div class="flex justify-between items-center w-full">
             <div>
-                <div class="topbar-title">Mon Emploi du Temps</div>
-                <div class="topbar-subtitle">Planning hebdomadaire de vos cours et séances d'enseignement</div>
+                <div class="topbar-title">{{ __('app.my_schedule') }}</div>
+                <div class="topbar-subtitle">{{ __('app.schedule_subtitle') }}</div>
             </div>
         </div>
     </x-slot>
 
     @php
         $dayMap = [
-            'Monday'    => ['fr' => 'Lundi',    'abbr' => 'LUN'],
-            'Tuesday'   => ['fr' => 'Mardi',    'abbr' => 'MAR'],
-            'Wednesday' => ['fr' => 'Mercredi', 'abbr' => 'MER'],
-            'Thursday'  => ['fr' => 'Jeudi',    'abbr' => 'JEU'],
-            'Friday'    => ['fr' => 'Vendredi', 'abbr' => 'VEN'],
-            'Saturday'  => ['fr' => 'Samedi',   'abbr' => 'SAM'],
+            'Monday'    => ['abbr' => __('app.day_monday')],
+            'Tuesday'   => ['abbr' => __('app.day_tuesday')],
+            'Wednesday' => ['abbr' => __('app.day_wednesday')],
+            'Thursday'  => ['abbr' => __('app.day_thursday')],
+            'Friday'    => ['abbr' => __('app.day_friday')],
+            'Saturday'  => ['abbr' => __('app.day_saturday')],
         ];
 
         $palette = [
@@ -63,7 +63,7 @@
                         {{ $weekStart->translatedFormat('d') }} –
                         {{ $weekStart->copy()->addDays(5)->translatedFormat('d M Y') }}
                     </div>
-                    <div class="text-xs text-gray-400">Semaine actuelle</div>
+                    <div class="text-xs text-gray-400">{{ __('app.current_week') }}</div>
                 </div>
             </div>
             <div class="flex items-center gap-2">
@@ -194,7 +194,7 @@
         @if($totalSlots === 0)
             <div class="dark-card rounded-3xl p-12 text-center mt-6 border border-white/5">
                 <span class="text-5xl">📅</span>
-                <p class="text-gray-400 italic mt-4">Aucun cours planifié dans votre emploi du temps.</p>
+                <p class="text-gray-400 italic mt-4">{{ __('app.no_schedule_prof') }}</p>
             </div>
         @endif
     </div>

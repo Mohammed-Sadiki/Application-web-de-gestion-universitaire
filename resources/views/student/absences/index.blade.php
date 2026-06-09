@@ -2,8 +2,8 @@
     <x-slot name="header">
         <div class="flex justify-between items-center w-full">
             <div>
-                <div class="topbar-title">Mes Absences</div>
-                <div class="topbar-subtitle">Suivi de vos absences et dépôt de justificatifs</div>
+                <div class="topbar-title">{{ __('app.student_absences_title') }}</div>
+                <div class="topbar-subtitle">{{ __('app.student_absences_sub') }}</div>
             </div>
         </div>
     </x-slot>
@@ -16,18 +16,17 @@
         @endif
 
         @if(!$absences->isEmpty())
-            <!-- Summary Stats Header -->
             <div class="grid grid-cols-3 gap-6 mb-6">
                 <div class="dark-card rounded-3xl p-5 text-center border border-white/5">
                     <div class="text-xs font-bold text-gray-400 uppercase tracking-wider">Total</div>
                     <div class="text-3xl font-black text-white mt-1">{{ $absences->count() }} h</div>
                 </div>
                 <div class="dark-card rounded-3xl p-5 text-center border border-white/5 border-l-4 border-l-[#10b981]">
-                    <div class="text-xs font-bold text-gray-400 uppercase tracking-wider text-[#10b981]">Justifiées</div>
+                    <div class="text-xs font-bold uppercase tracking-wider text-[#10b981]">{{ __('app.absences_justified') }}</div>
                     <div class="text-3xl font-black text-[#10b981] mt-1">{{ $absences->where('justified', true)->count() }} h</div>
                 </div>
                 <div class="dark-card rounded-3xl p-5 text-center border border-white/5 border-l-4 border-l-[#ef4444]">
-                    <div class="text-xs font-bold text-gray-400 uppercase tracking-wider text-[#ef4444]">Non Justifiées</div>
+                    <div class="text-xs font-bold uppercase tracking-wider text-[#ef4444]">{{ __('app.absences_unjustified') }}</div>
                     <div class="text-3xl font-black text-[#ef4444] mt-1">{{ $absences->where('justified', false)->count() }} h</div>
                 </div>
             </div>
@@ -36,7 +35,7 @@
         @if($absences->isEmpty())
             <div class="dark-card rounded-3xl p-12 text-center">
                 <span class="text-5xl">🎉</span>
-                <p class="text-gray-400 italic mt-4">Aucune absence enregistrée. Excellent travail !</p>
+                <p class="text-gray-400 italic mt-4">{{ __('app.no_student_absences') }}</p>
             </div>
         @else
             <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -47,10 +46,12 @@
                     @php
                         if ($absence->justified) {
                             $status = $absence->status;
-                            $statusFr = $absence->status === 'validated' ? 'Validé' : ($absence->status === 'rejected' ? 'Refusé' : 'En attente');
+                            $statusLabel = $absence->status === 'validated'
+                                ? __('app.validated')
+                                : ($absence->status === 'rejected' ? __('app.rejected') : __('app.pending'));
                         } else {
                             $status = 'unjustified';
-                            $statusFr = 'Non justifiée';
+                            $statusLabel = __('app.absences_unjustified');
                         }
                         $color = $colors[$status] ?? '#64748b';
                     @endphp
@@ -58,10 +59,10 @@
                         <div class="flex items-center justify-between mb-3 border-b border-white/5 pb-2">
                             <span class="text-xs font-semibold text-gray-400">📅 {{ \Carbon\Carbon::parse($absence->date)->format('d/m/Y') }}</span>
                             <span class="px-2.5 py-0.5 text-[10px] font-bold rounded-full uppercase" style="background: {{ $color }}15; color: {{ $color }}; border: 1px solid {{ $color }}25;">
-                                {{ $statusFr }}
+                                {{ $statusLabel }}
                             </span>
                         </div>
-                        
+
                         <h4 class="text-base font-bold text-white mb-4">{{ $absence->module->name }}</h4>
 
                         <div class="mt-4 pt-3 border-t border-white/5">
@@ -69,10 +70,10 @@
                                 <form action="{{ route('student.absences.update', $absence) }}" method="POST" enctype="multipart/form-data" class="space-y-3">
                                     @csrf
                                     @method('PATCH')
-                                    <div class="text-xs text-gray-400 font-semibold mb-1">Déposer un justificatif :</div>
+                                    <div class="text-xs text-gray-400 font-semibold mb-1">{{ __('app.upload_justification') }}</div>
                                     <div class="flex items-center gap-2">
                                         <input type="file" name="justification" accept=".pdf,.jpg,.png" class="block w-full text-xs text-gray-400 file:mr-2 file:py-1 file:px-2 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-white/10 file:text-white hover:file:bg-white/20" required>
-                                        <button type="submit" class="px-3.5 py-2 bg-gradient-to-r from-[#8b5cf6] to-[#d946ef] hover:opacity-90 text-white text-xs font-bold rounded-xl shadow-md transition duration-200">Déposer</button>
+                                        <button type="submit" class="px-3.5 py-2 bg-gradient-to-r from-[#8b5cf6] to-[#d946ef] hover:opacity-90 text-white text-xs font-bold rounded-xl shadow-md transition duration-200">{{ __('app.upload_btn') }}</button>
                                     </div>
                                 </form>
                                 @error('justification')
@@ -80,9 +81,9 @@
                                 @enderror
                             @elseif($absence->justification_path)
                                 <div class="flex items-center justify-between">
-                                    <span class="text-xs text-gray-400">Justificatif fourni</span>
+                                    <span class="text-xs text-gray-400">{{ __('app.justification_provided') }}</span>
                                     <a href="{{ asset('storage/' . $absence->justification_path) }}" target="_blank" class="inline-flex items-center text-xs text-[#06b6d4] hover:underline gap-1">
-                                        Voir le justificatif &rarr;
+                                        {{ __('app.view_justification') }}
                                     </a>
                                 </div>
                             @endif
