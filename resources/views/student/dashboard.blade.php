@@ -96,7 +96,7 @@
                                                 <h4 class="text-base font-bold text-white">{{ $session->module->name }}</h4>
                                                 <p class="text-xs text-gray-400 font-medium">Enseignant : {{ $session->professor->user->name }}</p>
                                             </div>
-                                            <a href="{{ route('student.courses.show', $session->module) }}" 
+                                            <a href="{{ route('courses.show', $session->module) }}" 
                                                class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-[#8b5cf6] to-[#d946ef] hover:from-[#7c3aed] hover:to-[#c084fc] text-white text-xs font-bold rounded-xl shadow-md transition duration-200">
                                                 Classroom &rarr;
                                             </a>

@@ -50,7 +50,7 @@
                         <x-nav-link :href="route('student.grades.index')" :active="request()->routeIs('student.grades.*')"> {{ __('Mes Notes') }} </x-nav-link>
                         <x-nav-link :href="route('student.absences.index')" :active="request()->routeIs('student.absences.*')"> {{ __('Absences') }} </x-nav-link>
                         <x-nav-link :href="route('student.schedules.index')" :active="request()->routeIs('student.schedules.*')"> {{ __('EDT') }} </x-nav-link>
-                        <x-nav-link :href="route('student.courses.index')" :active="request()->routeIs('student.courses.*')"> {{ __('Classroom') }} </x-nav-link>
+                        <x-nav-link :href="route('courses.index')" :active="request()->routeIs('courses.*')"> {{ __('Classroom') }} </x-nav-link>
                         <x-nav-link :href="route('student.requests.index')" :active="request()->routeIs('student.requests.*')"> {{ __('Demandes') }} </x-nav-link>
                     @endif
                 </div>

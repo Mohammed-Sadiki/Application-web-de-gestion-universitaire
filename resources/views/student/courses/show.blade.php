@@ -5,7 +5,7 @@
                 <div class="topbar-title">{{ $module->name }} — Classroom</div>
                 <div class="topbar-subtitle">Consultez les supports et les annonces de ce module</div>
             </div>
-            <a href="{{ route('student.courses.index') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-bold rounded-xl transition">
+            <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-bold rounded-xl transition">
                 &larr; Retour
             </a>
         </div>
@@ -89,7 +89,7 @@
                                 @endif
 
                                 {{-- Add comment form --}}
-                                <form action="{{ route('student.courses.comment', $announcement) }}" method="POST" class="mt-4 flex gap-3">
+                                <form action="{{ route('courses.comment', $announcement) }}" method="POST" class="mt-4 flex gap-3">
                                     @csrf
                                     <input type="text" name="content" placeholder="Ajouter un commentaire..." required
                                            class="flex-1 bg-[#0d1220] border border-white/10 text-white rounded-xl px-4 py-2 text-sm focus:border-[#8b5cf6] focus:ring-1 focus:ring-[#8b5cf6]">

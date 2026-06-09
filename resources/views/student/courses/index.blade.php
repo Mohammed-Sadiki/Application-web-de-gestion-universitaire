@@ -22,7 +22,7 @@
                 @else
                     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         @foreach($modules as $module)
-                            <a href="{{ route('student.courses.show', $module) }}" class="block dark-card rounded-3xl p-5 border border-white/5 hover:border-[#8b5cf6]/40 hover:bg-[#8b5cf6]/5 transition-all duration-300">
+                            <a href="{{ route('courses.show', $module) }}" class="block dark-card rounded-3xl p-5 border border-white/5 hover:border-[#8b5cf6]/40 hover:bg-[#8b5cf6]/5 transition-all duration-300">
                                 <div class="flex items-center gap-4 mb-4">
                                     <div class="w-12 h-12 bg-gradient-to-br from-[#8b5cf6] to-[#d946ef] rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-md">
                                         {{ strtoupper(substr($module->name, 0, 1)) }}
