@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="topbar-title">Administration Générale</div>
-        <div class="topbar-subtitle">Vue d'ensemble et gestion des ressources de l'établissement</div>
+        <div class="topbar-title">{{ __('app.admin_general_title') }}</div>
+        <div class="topbar-subtitle">{{ __('app.admin_general_subtitle') }}</div>
     </x-slot>
 
     <div class="py-12 animate-fade-in">
@@ -17,12 +17,10 @@
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5 mb-10">
                 @foreach($stats as $key => $value)
                     @php
-                        $label = str_replace('_', ' ', $key);
+                        $label = __('app.' . $key);
                         if ($key === 'pending_requests') {
-                            $label = 'Demandes En Attente';
                             $textColor = 'text-neon-pink';
                         } elseif ($key === 'users') {
-                            $label = 'Utilisateurs';
                             $textColor = 'text-neon-cyan';
                         } else {
                             $textColor = 'text-neon-purple';
@@ -57,23 +55,23 @@
                         <div class="p-6 border-b border-white/5 flex justify-between items-center bg-[#17192a]/50">
                             <h3 class="text-lg font-bold text-white flex items-center">
                                 <span class="w-2.5 h-2.5 bg-[#d946ef] rounded-full mr-2.5 animate-pulse"></span>
-                                Demandes administratives en attente
+                                {{ __('app.pending_requests_title') }}
                             </h3>
                         </div>
                         <div class="p-6 bg-transparent">
                             @if($pendingRequests->isEmpty())
                                 <div class="text-center py-12">
                                     <span class="text-5xl">👋</span>
-                                    <p class="text-gray-400 italic mt-4 text-sm">Aucune demande en attente pour le moment.</p>
+                                    <p class="text-gray-400 italic mt-4 text-sm">{{ __('app.no_pending_requests') }}</p>
                                 </div>
                             @else
                                 <div class="overflow-x-auto">
                                     <table class="min-w-full">
                                         <thead>
                                             <tr class="text-left text-xs font-bold text-gray-400 uppercase tracking-wider border-b border-white/5">
-                                                <th class="pb-3">Utilisateur</th>
-                                                <th class="pb-3">Type</th>
-                                                <th class="pb-3 text-right">Actions</th>
+                                                <th class="pb-3">{{ __('app.user') }}</th>
+                                                <th class="pb-3">{{ __('app.type') }}</th>
+                                                <th class="pb-3 text-right">{{ __('app.actions') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody class="text-sm divide-y divide-white/5">
@@ -89,14 +87,14 @@
                                                         <button type="button" 
                                                                 @click="openValidationModal('{{ route('admin.requests.validate', $req) }}', '{{ addslashes($req->user->name) }}', '{{ addslashes($req->type) }}')"
                                                                 class="bg-[#06b6d4]/10 hover:bg-[#06b6d4]/20 border border-[#06b6d4]/20 text-[#06b6d4] px-3 py-1 rounded-xl text-xs font-bold transition">
-                                                            Valider
+                                                            {{ __('app.validate') }}
                                                         </button>
                                                         <form action="{{ route('admin.requests.validate', $req) }}" method="POST" class="inline">
                                                             @csrf
                                                             @method('PATCH')
                                                             <input type="hidden" name="status" value="rejected">
                                                             <button type="submit" class="bg-[#d946ef]/10 hover:bg-[#d946ef]/20 border border-[#d946ef]/20 text-[#d946ef] px-3 py-1 rounded-xl text-xs font-bold transition">
-                                                                Rejeter
+                                                                {{ __('app.reject') }}
                                                             </button>
                                                         </form>
                                                     </td>
@@ -110,187 +108,22 @@
                     </div>
                 </div>
 
-                <!-- Transferred Requests Panel -->
-                <div class="lg:col-span-2 space-y-6" x-data="{
-                    openUploadModal(uploadUrl, userName, docType) {
-                        this.uploadAction = uploadUrl;
-                        this.uploadUserName = userName;
-                        this.uploadDocType = docType;
-                        $dispatch('open-modal', 'admin-upload-document-modal');
-                    },
-                    uploadAction: '',
-                    uploadUserName: '',
-                    uploadDocType: ''
-                }">
-                    <div class="dark-card rounded-3xl overflow-hidden border border-white/5">
-                        <div class="p-6 border-b border-white/5 flex justify-between items-center bg-[#17192a]/50">
-                            <h3 class="text-lg font-bold text-white flex items-center">
-                                <span class="w-2.5 h-2.5 bg-orange-400 rounded-full mr-2.5 animate-pulse"></span>
-                                Demandes en cours de traitement
-                            </h3>
-                            @if($transferredRequests->isNotEmpty())
-                                <span class="px-2.5 py-1 text-[11px] font-bold bg-orange-500/10 border border-orange-500/20 rounded-full text-orange-400">
-                                    {{ $transferredRequests->count() }} en cours
-                                </span>
-                            @endif
-                        </div>
-                        <div class="p-6 bg-transparent">
-                            @if($transferredRequests->isEmpty())
-                                <div class="text-center py-10">
-                                    <span class="text-4xl">🎯</span>
-                                    <p class="text-gray-400 italic mt-3 text-sm">Aucune demande en cours de traitement.</p>
-                                </div>
-                            @else
-                                <div class="overflow-x-auto">
-                                    <table class="min-w-full">
-                                        <thead>
-                                            <tr class="text-left text-xs font-bold text-gray-400 uppercase tracking-wider border-b border-white/5">
-                                                <th class="pb-3">Utilisateur</th>
-                                                <th class="pb-3">Type</th>
-                                                <th class="pb-3">Professeur assigné</th>
-                                                <th class="pb-3 text-right">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="text-sm divide-y divide-white/5">
-                                            @foreach($transferredRequests as $req)
-                                                <tr class="hover:bg-white/[0.02] transition-colors">
-                                                    <td class="py-4 font-bold text-white">{{ $req->user->name }}</td>
-                                                    <td class="py-4">
-                                                        <span class="px-2.5 py-1 bg-[#8b5cf6]/10 border border-[#8b5cf6]/20 rounded-full text-xs font-semibold text-[#8b5cf6]">
-                                                            {{ $req->type }}
-                                                        </span>
-                                                    </td>
-                                                    <td class="py-4 text-gray-300">
-                                                        @if($req->professor && $req->professor->user)
-                                                            <div class="flex items-center gap-2">
-                                                                <span class="w-6 h-6 rounded-full bg-[#06b6d4]/20 border border-[#06b6d4]/30 flex items-center justify-center text-[10px] text-[#06b6d4] font-bold">
-                                                                    {{ strtoupper(substr($req->professor->user->name, 0, 1)) }}
-                                                                </span>
-                                                                <span class="text-xs">{{ $req->professor->user->name }}</span>
-                                                            </div>
-                                                        @else
-                                                            <span class="text-gray-500 text-xs">—</span>
-                                                        @endif
-                                                    </td>
-                                                    <td class="py-4 text-right">
-                                                        <button type="button"
-                                                            @click="openUploadModal('{{ route('admin.requests.upload', $req) }}', '{{ addslashes($req->user->name) }}', '{{ addslashes($req->type) }}')"
-                                                            class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-[#06b6d4]/20 to-[#8b5cf6]/20 hover:from-[#06b6d4]/40 hover:to-[#8b5cf6]/40 border border-[#06b6d4]/30 hover:border-[#06b6d4]/60 text-[#06b6d4] text-xs font-bold rounded-xl transition-all duration-200 shadow-sm">
-                                                            📤 Ajouter le document
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-
-                    <!-- Admin Upload Document Modal -->
-                    <x-modal name="admin-upload-document-modal" focusable>
-                        <form :action="uploadAction" method="POST" enctype="multipart/form-data" class="p-6">
-                            @csrf
-
-                            <h2 class="text-lg font-bold text-white mb-1 flex items-center gap-2">
-                                <span class="w-2.5 h-2.5 bg-[#06b6d4] rounded-full"></span>
-                                Ajouter et valider le document
-                            </h2>
-                            <p class="text-sm text-gray-400 mb-6">
-                                Document <span class="text-[#8b5cf6] font-semibold" x-text="uploadDocType"></span>
-                                pour <span class="text-white font-semibold" x-text="uploadUserName"></span>.
-                            </p>
-
-                            <div class="mb-6">
-                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2" for="admin_document">
-                                    Sélectionner le fichier <span class="text-[#d946ef]">(requis)</span>
-                                </label>
-                                <input type="file" name="document" id="admin_document"
-                                       accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" required
-                                       class="w-full text-sm text-gray-400 bg-white/5 border border-white/10 rounded-xl px-4 py-3
-                                              focus:outline-none focus:border-[#06b6d4]
-                                              file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0
-                                              file:text-xs file:font-bold file:bg-[#06b6d4]/10 file:text-[#06b6d4]
-                                              hover:file:bg-[#06b6d4]/20 transition-all cursor-pointer">
-                                <p class="text-[11px] text-gray-500 mt-2">Formats : PDF, PNG, JPG, JPEG, DOC, DOCX — Max 10 Mo.</p>
-                            </div>
-
-                            <div class="flex justify-end gap-3 border-t border-white/5 pt-4">
-                                <button type="button"
-                                        @click="$dispatch('close-modal', 'admin-upload-document-modal')"
-                                        class="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-4 py-2 rounded-xl text-xs font-bold transition">
-                                    Annuler
-                                </button>
-                                <button type="submit"
-                                        class="inline-flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-[#06b6d4] to-[#8b5cf6] hover:opacity-90 text-white text-xs font-bold rounded-xl shadow-md transition">
-                                    ✔ Valider la demande
-                                </button>
-                            </div>
-                        </form>
-                    </x-modal>
-                </div>
-
-                <!-- Document Validation Modal -->
-                <x-modal name="validate-document-modal" focusable>
-                    <form :action="action" method="POST" class="p-6">
-                        @csrf
-                        @method('PATCH')
-                        <input type="hidden" name="status" value="validated">
-                        
-                        <h2 class="text-lg font-bold text-white mb-2 flex items-center">
-                            <span class="w-2.5 h-2.5 bg-[#06b6d4] rounded-full mr-2"></span>
-                            Transférer la demande au professeur
-                        </h2>
-                        
-                        <p class="text-sm text-gray-400 mb-6">
-                            Vous êtes sur le point de transférer la demande de <span class="text-white font-semibold" x-text="userName"></span> pour le document <span class="text-[#8b5cf6] font-semibold" x-text="requestType"></span> au professeur concerné.
-                        </p>
-
-                        <div class="flex justify-end space-x-3 border-t border-white/5 pt-4">
-                            <button type="button" @click="$dispatch('close-modal', 'validate-document-modal')"
-                                    class="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-4 py-2 rounded-xl text-xs font-bold transition">
-                                Annuler
-                            </button>
-                            <button type="submit"
-                                    class="bg-[#06b6d4]/90 hover:bg-[#06b6d4] text-black px-4 py-2 rounded-xl text-xs font-bold transition">
-                                Confirmer le transfert
-                            </button>
-                        </div>
-                    </form>
-                </x-modal>
-
-                <!-- Right area: Admin Quick links -->
+                <!-- Right area: Notifications / Activities (Placeholder) -->
                 <div class="space-y-6">
-                    <div class="dark-card rounded-3xl p-6 relative overflow-hidden bg-gradient-to-b from-[#151726] to-[#0e101f] border border-white/5">
-                        <div class="absolute -right-10 -bottom-10 opacity-5 text-[#8b5cf6]">
-                            <svg class="w-40 h-40" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 3L1 9L12 15L21 9L12 3M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z"/>
-                            </svg>
-                        </div>
-                        <h3 class="text-lg font-bold text-white mb-2">Ressources Globales</h3>
-                        <p class="text-xs text-gray-400 mb-6">Administrez l'ensemble des données et des ressources académiques.</p>
-                        
-                        <div class="space-y-3">
-                            <a href="{{ route('admin.users.index') }}" class="flex items-center justify-between p-3.5 bg-white/[0.03] hover:bg-white/[0.08] border border-white/5 hover:border-[#8b5cf6]/30 rounded-xl text-sm font-semibold text-white transition duration-200">
-                                <span class="flex items-center"><span class="text-base mr-2">👥</span> Utilisateurs</span>
-                                <span class="text-[#8b5cf6]">&rarr;</span>
+                    <div class="dark-card rounded-3xl p-6 border border-white/5">
+                        <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4">{{ __('app.actions') }}</h3>
+                        <div class="grid grid-cols-1 gap-3">
+                            <a href="{{ route('admin.users.create') }}" class="flex items-center p-3 rounded-2xl bg-[#8b5cf6]/5 border border-[#8b5cf6]/10 hover:bg-[#8b5cf6]/10 transition group">
+                                <div class="w-8 h-8 rounded-lg bg-[#8b5cf6]/20 flex items-center justify-center mr-3 text-[#8b5cf6]">
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 4v16m8-8H4"/></svg>
+                                </div>
+                                <span class="text-xs font-bold text-gray-300 group-hover:text-white">{{ __('app.add_user') }}</span>
                             </a>
-                            <a href="{{ route('admin.departments.index') }}" class="flex items-center justify-between p-3.5 bg-white/[0.03] hover:bg-white/[0.08] border border-white/5 hover:border-[#d946ef]/30 rounded-xl text-sm font-semibold text-white transition duration-200">
-                                <span class="flex items-center"><span class="text-base mr-2">🏫</span> Filières / Départements</span>
-                                <span class="text-[#d946ef]">&rarr;</span>
-                            </a>
-                            <a href="{{ route('admin.groups.index') }}" class="flex items-center justify-between p-3.5 bg-white/[0.03] hover:bg-white/[0.08] border border-white/5 hover:border-[#06b6d4]/30 rounded-xl text-sm font-semibold text-white transition duration-200">
-                                <span class="flex items-center"><span class="text-base mr-2">🎓</span> Groupes de classe</span>
-                                <span class="text-[#06b6d4]">&rarr;</span>
-                            </a>
-                            <a href="{{ route('admin.modules.index') }}" class="flex items-center justify-between p-3.5 bg-white/[0.03] hover:bg-white/[0.08] border border-white/5 hover:border-[#8b5cf6]/30 rounded-xl text-sm font-semibold text-white transition duration-200">
-                                <span class="flex items-center"><span class="text-base mr-2">📚</span> Modules</span>
-                                <span class="text-[#8b5cf6]">&rarr;</span>
-                            </a>
-                            <a href="{{ route('admin.rooms.index') }}" class="flex items-center justify-between p-3.5 bg-white/[0.03] hover:bg-white/[0.08] border border-white/5 hover:border-[#d946ef]/30 rounded-xl text-sm font-semibold text-white transition duration-200">
-                                <span class="flex items-center"><span class="text-base mr-2">📍</span> Salles de cours</span>
-                                <span class="text-[#d946ef]">&rarr;</span>
+                            <a href="{{ route('admin.departments.create') }}" class="flex items-center p-3 rounded-2xl bg-[#06b6d4]/5 border border-[#06b6d4]/10 hover:bg-[#06b6d4]/10 transition group">
+                                <div class="w-8 h-8 rounded-lg bg-[#06b6d4]/20 flex items-center justify-center mr-3 text-[#06b6d4]">
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 4v16m8-8H4"/></svg>
+                                </div>
+                                <span class="text-xs font-bold text-gray-300 group-hover:text-white">{{ __('app.add_department') }}</span>
                             </a>
                         </div>
                     </div>
@@ -298,4 +131,41 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal for Document Upload/Validation -->
+    <x-modal name="validate-document-modal" focusable>
+        <div class="p-8">
+            <h2 class="text-xl font-bold text-white mb-2">
+                {{ __('app.validate') }} : <span x-text="requestType" class="text-[#8b5cf6]"></span>
+            </h2>
+            <p class="text-gray-400 text-sm mb-6">
+                {{ __('app.user') }} : <span x-text="userName" class="font-bold text-white"></span>
+            </p>
+
+            <form method="post" :action="action" enctype="multipart/form-data">
+                @csrf
+                @method('PATCH')
+                <input type="hidden" name="status" value="approved">
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+                            {{ __('app.upload') }} (PDF)
+                        </label>
+                        <input type="file" name="document" accept=".pdf" required
+                               class="w-full bg-white/5 border border-white/10 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#8b5cf6] transition">
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-end gap-3">
+                    <button type="button" x-on:click="$dispatch('close')" class="px-5 py-2.5 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition">
+                        {{ __('app.cancel') }}
+                    </button>
+                    <button type="submit" class="bg-gradient-to-r from-[#8b5cf6] to-[#d946ef] text-white px-6 py-2.5 rounded-xl text-xs font-bold shadow-lg shadow-purple-900/30 transition hover:opacity-90">
+                        {{ __('app.confirm') }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </x-modal>
 </x-app-layout>

@@ -9,7 +9,7 @@
             </div>
             <span class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#a78bfa] to-[#e879f9] tracking-tight">PFM</span>
         </div>
-        <p class="text-gray-400 text-sm font-medium">Plateforme de gestion universitaire</p>
+        <p class="text-gray-400 text-sm font-medium">{{ __('app.platform_description') }}</p>
     </div>
 
     <!-- Session Status -->
@@ -20,18 +20,18 @@
 
         <!-- Email Address -->
         <div>
-            <label for="email" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Adresse Email</label>
+            <label for="email" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">{{ __('app.email_address') }}</label>
             <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
-                placeholder="exemple@univ.edu"
+                placeholder="{{ __('app.email_placeholder') }}"
                 class="w-full bg-white/5 border border-white/10 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#8b5cf6] focus:ring-1 focus:ring-[#8b5cf6] transition placeholder-gray-600">
             <x-input-error :messages="$errors->get('email')" class="mt-2 text-[#d946ef] text-xs" />
         </div>
 
         <!-- Password -->
         <div class="mt-5">
-            <label for="password" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Mot de passe</label>
+            <label for="password" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">{{ __('app.password') }}</label>
             <input id="password" type="password" name="password" required
-                placeholder="••••••••"
+                placeholder="{{ __('app.password_placeholder') }}"
                 class="w-full bg-white/5 border border-white/10 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#8b5cf6] focus:ring-1 focus:ring-[#8b5cf6] transition placeholder-gray-600">
             <x-input-error :messages="$errors->get('password')" class="mt-2 text-[#d946ef] text-xs" />
         </div>
@@ -40,11 +40,11 @@
         <div class="flex items-center justify-between mt-5">
             <label class="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" name="remember" class="rounded border-white/20 bg-white/10 text-[#8b5cf6] focus:ring-[#8b5cf6]">
-                <span class="text-xs text-gray-400">Se souvenir de moi</span>
+                <span class="text-xs text-gray-400">{{ __('app.remember_me') }}</span>
             </label>
             @if (Route::has('password.request'))
                 <a href="{{ route('password.request') }}" class="text-xs text-[#8b5cf6] hover:text-[#d946ef] transition duration-200">
-                    Mot de passe oublié ?
+                    {{ __('app.forgot_password') }}
                 </a>
             @endif
         </div>
@@ -52,7 +52,7 @@
         <div class="mt-7">
             <button type="submit"
                 class="w-full py-3 bg-gradient-to-r from-[#8b5cf6] to-[#d946ef] hover:opacity-90 text-white font-bold rounded-xl shadow-lg shadow-purple-900/30 transition duration-200 transform hover:-translate-y-0.5 text-sm tracking-wide">
-                Se connecter →
+                {{ __('app.login_button') }} →
             </button>
         </div>
     </form>

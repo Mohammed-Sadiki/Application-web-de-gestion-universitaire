@@ -2,12 +2,12 @@
     <x-slot name="header">
         <div class="flex justify-between items-center w-full">
             <div>
-                <div class="topbar-title">Gestion des Modules</div>
-                <div class="topbar-subtitle">Gérez les modules pédagogiques et leurs professeurs</div>
+                <div class="topbar-title">{{ __('app.modules_management') }}</div>
+                <div class="topbar-subtitle">{{ __('app.modules_subtitle') }}</div>
             </div>
             <a href="{{ route('admin.modules.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#8b5cf6] to-[#d946ef] hover:opacity-90 text-white text-xs font-bold rounded-xl shadow-md transition duration-200">
                 <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Ajouter un module
+                {{ __('app.add_module') }}
             </a>
         </div>
     </x-slot>
@@ -21,21 +21,21 @@
             <div class="p-6 bg-[#17192a]/30 border-b border-white/5">
                 <h3 class="text-lg font-bold text-white flex items-center gap-2">
                     <span class="w-2.5 h-2.5 bg-[#d946ef] rounded-full animate-pulse"></span>
-                    Liste des modules
+                    {{ __('app.modules_list') }}
                 </h3>
             </div>
             <div class="p-6">
                 @if($modules->isEmpty())
-                    <p class="text-gray-400 italic text-center py-6">Aucun module enregistré.</p>
+                    <p class="text-gray-400 italic text-center py-6">{{ __('app.no_modules') }}</p>
                 @else
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-white/5">
                         <thead>
                             <tr class="text-left text-xs font-bold text-gray-400 uppercase tracking-wider">
-                                <th class="pb-3">Nom</th>
-                                <th class="pb-3">Filière</th>
-                                <th class="pb-3">Professeurs</th>
-                                <th class="pb-3 text-right">Actions</th>
+                                <th class="pb-3">{{ __('app.name') }}</th>
+                                <th class="pb-3">{{ __('app.department') }}</th>
+                                <th class="pb-3">{{ __('app.professors') }}</th>
+                                <th class="pb-3 text-right">{{ __('app.actions') }}</th>
                             </tr>
                         </thead>
                         <tbody class="text-sm divide-y divide-white/5 text-gray-300">
@@ -54,12 +54,12 @@
                                         @endforeach
                                     </div>
                                 </td>
-                                <td class="py-4 text-right space-x-2">
-                                    <a href="{{ route('admin.modules.edit', $module) }}" class="inline-flex items-center px-3 py-1 bg-[#8b5cf6]/10 hover:bg-[#8b5cf6]/20 border border-[#8b5cf6]/20 text-[#8b5cf6] text-xs font-bold rounded-xl transition">Modifier</a>
+                                <td class="py-4 text-right space-x-2 whitespace-nowrap">
+                                    <a href="{{ route('admin.modules.edit', $module) }}" class="inline-flex items-center px-3 py-1 bg-[#8b5cf6]/10 hover:bg-[#8b5cf6]/20 border border-[#8b5cf6]/20 text-[#8b5cf6] text-xs font-bold rounded-xl transition">{{ __('app.edit') }}</a>
                                     <form action="{{ route('admin.modules.destroy', $module) }}" method="POST" class="inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="inline-flex items-center px-3 py-1 bg-[#d946ef]/10 hover:bg-[#d946ef]/20 border border-[#d946ef]/20 text-[#d946ef] text-xs font-bold rounded-xl transition" onclick="return confirm('Êtes-vous sûr ?')">Supprimer</button>
+                                        <button type="submit" class="inline-flex items-center px-3 py-1 bg-[#d946ef]/10 hover:bg-[#d946ef]/20 border border-[#d946ef]/20 text-[#d946ef] text-xs font-bold rounded-xl transition" onclick="return confirm('{{ __('app.confirm_delete') }}')">{{ __('app.delete') }}</button>
                                     </form>
                                 </td>
                             </tr>

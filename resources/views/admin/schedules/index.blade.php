@@ -250,7 +250,7 @@
                                                 </span>
                                             </td>
                                             <td class="py-3.5">
-                                                <span class="px-2.5 py-1 bg-[#06b6d4]/10 border border-[#06b6d4]/20 rounded-full text-xs font-semibold text-[#06b6d4]">
+                                                <span class="px-2.5 py-1 bg-[#06b6d4]/10 border border-[#06b6d4]/20 rounded-full text-xs font-semibold text-[#06b6d4] whitespace-nowrap">
                                                     {{ substr($schedule->start_time,0,5) }} – {{ substr($schedule->end_time,0,5) }}
                                                 </span>
                                             </td>

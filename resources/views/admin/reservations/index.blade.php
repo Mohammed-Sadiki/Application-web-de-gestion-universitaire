@@ -42,12 +42,12 @@
                                 <td class="py-4 font-semibold text-white">{{ $reservation->professor->user->name }}</td>
                                 <td class="py-4">{{ \Carbon\Carbon::parse($reservation->date)->format('d/m/Y') }}</td>
                                 <td class="py-4">
-                                    <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-[#06b6d4]/10 border border-[#06b6d4]/20 text-[#06b6d4]">
+                                    <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-[#06b6d4]/10 border border-[#06b6d4]/20 text-[#06b6d4] whitespace-nowrap">
                                         {{ \Carbon\Carbon::parse($reservation->start_time)->format('H:i') }} – {{ \Carbon\Carbon::parse($reservation->end_time)->format('H:i') }}
                                     </span>
                                 </td>
                                 <td class="py-4 text-gray-400 max-w-xs truncate">{{ $reservation->reason ?? '—' }}</td>
-                                <td class="py-4 text-right space-x-2">
+                                <td class="py-4 text-right space-x-2 whitespace-nowrap">
                                     <a href="{{ route('admin.reservations.edit', $reservation) }}" class="inline-flex items-center px-3 py-1 bg-[#8b5cf6]/10 hover:bg-[#8b5cf6]/20 border border-[#8b5cf6]/20 text-[#8b5cf6] text-xs font-bold rounded-xl transition">Modifier</a>
                                     <form method="POST" action="{{ route('admin.reservations.destroy', $reservation) }}" class="inline" onsubmit="return confirm('Annuler cette réservation ?')">
                                         @csrf

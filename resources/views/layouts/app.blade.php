@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
 
 <head>
     <meta charset="utf-8">
@@ -38,10 +38,13 @@
     <div class="bg-blob blob-2"></div>
     <div class="bg-blob blob-3"></div>
 
-    <div class="app-wrapper" x-data="{ sidebarCollapsed: false }">
+    <div class="app-wrapper" x-data="{ sidebarCollapsed: false, mobileSidebarOpen: false }">
+
+        <!-- Sidebar overlay for mobile -->
+        <div class="sidebar-overlay" :class="{ 'open': mobileSidebarOpen }" @click="mobileSidebarOpen = false"></div>
 
         <!-- ═══════════ SIDEBAR LATÉRALE ═══════════ -->
-        <aside class="sidebar" :class="{ 'collapsed': sidebarCollapsed }">
+        <aside class="sidebar" :class="{ 'collapsed': sidebarCollapsed, 'open': mobileSidebarOpen }">
             <div class="sidebar-header">
                 <div class="logo-icon">
                     <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2.5">
@@ -53,7 +56,7 @@
 
             <nav class="sidebar-nav">
                 @if(auth()->user()->isAdmin())
-                    <span class="nav-section-label">Tableau de Bord</span>
+                    <span class="nav-section-label">{{ __('app.dashboard') }}</span>
                     <a href="{{ route('dashboard') }}"
                         class="sidebar-nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                         <span class="nav-icon">
@@ -65,13 +68,13 @@
                                 <rect x="14" y="14" width="7" height="7" rx="1" />
                             </svg>
                         </span>
-                        <span class="nav-label">Dashboard CRM</span>
+                        <span class="nav-label">{{ __('app.crm_dashboard') }}</span>
                     </a>
                 @endif
 
                 <!-- Links for ADMIN -->
                 @if(auth()->user()->isAdmin())
-                    <span class="nav-section-label" style="margin-top:8px;">Administration</span>
+                    <span class="nav-section-label" style="margin-top:8px;">{{ __('app.administration') }}</span>
 
                     <a href="{{ route('admin.dashboard') }}"
                         class="sidebar-nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
@@ -82,7 +85,7 @@
                                     d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                             </svg>
                         </span>
-                        <span class="nav-label">Admin Générale</span>
+                        <span class="nav-label">{{ __('app.admin_general') }}</span>
                     </a>
 
                     <a href="{{ route('admin.users.index') }}"
@@ -96,8 +99,7 @@
                                 <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                             </svg>
                         </span>
-                        <span class="nav-label">Utilisateurs</span>
-                        <span class="nav-badge">{{ \App\Models\User::count() }}</span>
+                        <span class="nav-label">{{ __('app.users') }}</span>
                     </a>
 
                     <a href="{{ route('admin.departments.index') }}"
@@ -109,7 +111,7 @@
                                 <polyline points="9,22 9,12 15,12 15,22" />
                             </svg>
                         </span>
-                        <span class="nav-label">Filières</span>
+                        <span class="nav-label">{{ __('app.departments') }}</span>
                     </a>
 
                     <a href="{{ route('admin.groups.index') }}"
@@ -123,7 +125,7 @@
                                     d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
                             </svg>
                         </span>
-                        <span class="nav-label">Groupes</span>
+                        <span class="nav-label">{{ __('app.groups') }}</span>
                     </a>
 
                     <a href="{{ route('admin.modules.index') }}"
@@ -135,7 +137,7 @@
                                 <path d="M8 7h8M8 11h8M8 15h5" />
                             </svg>
                         </span>
-                        <span class="nav-label">Modules</span>
+                        <span class="nav-label">{{ __('app.modules') }}</span>
                     </a>
 
                     <a href="{{ route('admin.rooms.index') }}"
@@ -147,7 +149,7 @@
                                 <line x1="9" y1="3" x2="9" y2="21" />
                             </svg>
                         </span>
-                        <span class="nav-label">Salles</span>
+                        <span class="nav-label">{{ __('app.rooms') }}</span>
                     </a>
 
                     <a href="{{ route('admin.schedules.index') }}"
@@ -161,7 +163,7 @@
                                 <line x1="3" y1="10" x2="21" y2="10" />
                             </svg>
                         </span>
-                        <span class="nav-label">Emplois du temps</span>
+                        <span class="nav-label">{{ __('app.schedules') }}</span>
                     </a>
 
                     <a href="{{ route('admin.absences.index') }}"
@@ -175,8 +177,7 @@
                                 <line x1="12" y1="17" x2="12.01" y2="17" />
                             </svg>
                         </span>
-                        <span class="nav-label">Absences</span>
-                        <span class="nav-badge">{{ \App\Models\Absence::where('status', 'pending')->count() }}</span>
+                        <span class="nav-label">{{ __('app.absences') }}</span>
                     </a>
 
                     <a href="{{ route('admin.lesson_logs.index') }}"
@@ -191,7 +192,7 @@
                                 <polyline points="10 9 9 9 8 9" />
                             </svg>
                         </span>
-                        <span class="nav-label">Cahiers de texte</span>
+                        <span class="nav-label">{{ __('app.lesson_logs') }}</span>
                     </a>
 
                     <a href="{{ route('admin.reservations.index') }}"
@@ -205,12 +206,12 @@
                                 <line x1="3" y1="10" x2="21" y2="10" />
                             </svg>
                         </span>
-                        <span class="nav-label">Réservations</span>
+                        <span class="nav-label">{{ __('app.reservations') }}</span>
                     </a>
 
                     <!-- Links for PROFESSOR -->
                 @elseif(auth()->user()->isProfessor())
-                    <span class="nav-section-label" style="margin-top:8px;">Professeur</span>
+                    <span class="nav-section-label" style="margin-top:8px;">{{ __('app.professor_section') }}</span>
 
                     <a href="{{ route('professor.dashboard') }}"
                         class="sidebar-nav-link {{ request()->routeIs('professor.dashboard') ? 'active' : '' }}">
@@ -220,7 +221,7 @@
                                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
                             </svg>
                         </span>
-                        <span class="nav-label">Mon Espace</span>
+                        <span class="nav-label">{{ __('app.my_space') }}</span>
                     </a>
 
                     <a href="{{ route('professor.grades.index') }}"
@@ -233,7 +234,7 @@
                                 <line x1="6" y1="20" x2="6" y2="14" />
                             </svg>
                         </span>
-                        <span class="nav-label">Saisie Notes</span>
+                        <span class="nav-label">{{ __('app.grades') }}</span>
                     </a>
 
                     <a href="{{ route('professor.absences.index') }}"
@@ -245,7 +246,7 @@
                                 <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
                             </svg>
                         </span>
-                        <span class="nav-label">Absences</span>
+                        <span class="nav-label">{{ __('app.absences') }}</span>
                     </a>
 
                     <a href="{{ route('professor.lesson_logs.index') }}"
@@ -257,7 +258,7 @@
                                 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
                             </svg>
                         </span>
-                        <span class="nav-label">Cahier de textes</span>
+                        <span class="nav-label">{{ __('app.lesson_log') }}</span>
                     </a>
 
                     <a href="{{ route('professor.materials.index') }}"
@@ -268,7 +269,7 @@
                                 <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5z" />
                             </svg>
                         </span>
-                        <span class="nav-label">Supports</span>
+                        <span class="nav-label">{{ __('app.materials') }}</span>
                     </a>
 
                     <a href="{{ route('professor.announcements.index') }}"
@@ -280,7 +281,7 @@
                                     d="M10.3 21a1.94 1.94 0 0 0 3.4 0M18.3 17A16.14 16.14 0 0 0 19 8a7 7 0 0 0-14 0 16.14 16.14 0 0 0 .7 9m1.6 0h12" />
                             </svg>
                         </span>
-                        <span class="nav-label">Annonces</span>
+                        <span class="nav-label">{{ __('app.announcements') }}</span>
                     </a>
 
                     <a href="{{ route('professor.reservations.index') }}"
@@ -294,7 +295,7 @@
                                 <line x1="3" y1="10" x2="21" y2="10" />
                             </svg>
                         </span>
-                        <span class="nav-label">Réservations</span>
+                        <span class="nav-label">{{ __('app.reservations') }}</span>
                     </a>
 
                     <a href="{{ route('professor.schedules.index') }}"
@@ -308,7 +309,7 @@
                                 <line x1="3" y1="10" x2="21" y2="10" />
                             </svg>
                         </span>
-                        <span class="nav-label">Mon EDT</span>
+                        <span class="nav-label">{{ __('app.my_schedule') }}</span>
                     </a>
 
                     <a href="{{ route('professor.requests.index') }}"
@@ -323,7 +324,7 @@
                                 <polyline points="10 9 9 9 8 9" />
                             </svg>
                         </span>
-                        <span class="nav-label">Mes Demandes</span>
+                        <span class="nav-label">{{ __('app.my_requests') }}</span>
                     </a>
 
                     <a href="{{ route('courses.index') }}"
@@ -334,12 +335,12 @@
                                 <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5z" />
                             </svg>
                         </span>
-                        <span class="nav-label">Classroom</span>
+                        <span class="nav-label">{{ __('app.classroom') }}</span>
                     </a>
 
                     <!-- Links for STUDENT -->
                 @elseif(auth()->user()->isStudent())
-                    <span class="nav-section-label" style="margin-top:8px;">Étudiant</span>
+                    <span class="nav-section-label" style="margin-top:8px;">{{ __('app.student_section') }}</span>
 
                     <a href="{{ route('student.dashboard') }}"
                         class="sidebar-nav-link {{ request()->routeIs('student.dashboard') ? 'active' : '' }}">
@@ -349,7 +350,7 @@
                                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
                             </svg>
                         </span>
-                        <span class="nav-label">Mon Espace</span>
+                        <span class="nav-label">{{ __('app.my_space') }}</span>
                     </a>
 
                     <a href="{{ route('student.grades.index') }}"
@@ -362,7 +363,7 @@
                                 <line x1="6" y1="20" x2="6" y2="14" />
                             </svg>
                         </span>
-                        <span class="nav-label">Mes Notes</span>
+                        <span class="nav-label">{{ __('app.my_grades') }}</span>
                     </a>
 
                     <a href="{{ route('student.absences.index') }}"
@@ -376,7 +377,7 @@
                                 <line x1="12" y1="17" x2="12.01" y2="17" />
                             </svg>
                         </span>
-                        <span class="nav-label">Absences</span>
+                        <span class="nav-label">{{ __('app.absences') }}</span>
                     </a>
 
                     <a href="{{ route('student.schedules.index') }}"
@@ -390,7 +391,7 @@
                                 <line x1="3" y1="10" x2="21" y2="10" />
                             </svg>
                         </span>
-                        <span class="nav-label">EDT</span>
+                        <span class="nav-label">{{ __('app.my_schedule') }}</span>
                     </a>
 
                     <a href="{{ route('courses.index') }}"
@@ -401,7 +402,7 @@
                                 <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5z" />
                             </svg>
                         </span>
-                        <span class="nav-label">Classroom</span>
+                        <span class="nav-label">{{ __('app.classroom') }}</span>
                     </a>
 
                     <a href="{{ route('student.requests.index') }}"
@@ -416,12 +417,12 @@
                                 <polyline points="10 9 9 9 8 9" />
                             </svg>
                         </span>
-                        <span class="nav-label">Demandes</span>
+                        <span class="nav-label">{{ __('app.requests') }}</span>
                     </a>
                 @endif
 
                 <!-- Profile Link (Common) -->
-                <span class="nav-section-label" style="margin-top:8px;">Système</span>
+                <span class="nav-section-label" style="margin-top:8px;">{{ __('app.system') }}</span>
                 <a href="{{ route('profile.edit') }}"
                     class="sidebar-nav-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
                     <span class="nav-icon">
@@ -431,7 +432,7 @@
                             <path d="M20 21a8 8 0 1 0-16 0" />
                         </svg>
                     </span>
-                    <span class="nav-label">Mon Profil</span>
+                    <span class="nav-label">{{ __('app.my_profile') }}</span>
                 </a>
             </nav>
 
@@ -452,7 +453,7 @@
             <!-- TOP BAR -->
             <header class="topbar">
                 <div class="topbar-left">
-                    <button class="toggle-btn" @click="sidebarCollapsed = !sidebarCollapsed">
+                    <button class="toggle-btn" @click="if (window.innerWidth < 1024) { mobileSidebarOpen = !mobileSidebarOpen } else { sidebarCollapsed = !sidebarCollapsed }">
                         <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                             stroke-width="2.5">
                             <line x1="3" y1="6" x2="21" y2="6" />
@@ -464,20 +465,35 @@
                         @isset($header)
                             {{ $header }}
                         @else
-                            <div class="topbar-title">Tableau de Bord</div>
-                            <div class="topbar-subtitle">Bienvenue, <strong
+                            <div class="topbar-title">{{ __('app.dashboard') }}</div>
+                            <div class="topbar-subtitle">{{ __('app.welcome') }}, <strong
                                     class="text-neon-purple">{{ auth()->user()->name }}</strong> —
-                                {{ now()->format('l d F Y') }}</div>
+                                {{ now()->translatedFormat('l d F Y') }}</div>
                         @endisset
                     </div>
                 </div>
 
                 <div class="topbar-right">
-                    <!-- Languages: FR EN AR -->
-                    <div class="flex items-center gap-3 mr-3 text-xs font-bold tracking-wider">
-                        <a href="{{ route('set-locale', 'fr') }}" class="{{ app()->getLocale() == 'fr' ? 'text-[#8b5cf6] border-b-2 border-[#8b5cf6]' : 'text-gray-400 hover:text-[#8b5cf6]' }} pb-1 transition duration-150">FR</a>
-                        <a href="{{ route('set-locale', 'en') }}" class="{{ app()->getLocale() == 'en' ? 'text-[#8b5cf6] border-b-2 border-[#8b5cf6]' : 'text-gray-400 hover:text-[#8b5cf6]' }} pb-1 transition duration-150">EN</a>
-                        <a href="{{ route('set-locale', 'ar') }}" class="{{ app()->getLocale() == 'ar' ? 'text-[#8b5cf6] border-b-2 border-[#8b5cf6]' : 'text-gray-400 hover:text-[#8b5cf6]' }} pb-1 transition duration-150">AR</a>
+                    <!-- Language Switcher -->
+                    <div class="lang-switcher">
+                        <a href="{{ route('set-locale', 'fr') }}"
+                           class="lang-btn {{ app()->getLocale() == 'fr' ? 'lang-active' : '' }}"
+                           title="Français">
+                            <span class="lang-flag">🇫🇷</span>
+                            <span class="lang-code">FR</span>
+                        </a>
+                        <a href="{{ route('set-locale', 'en') }}"
+                           class="lang-btn {{ app()->getLocale() == 'en' ? 'lang-active' : '' }}"
+                           title="English">
+                            <span class="lang-flag">🇬🇧</span>
+                            <span class="lang-code">EN</span>
+                        </a>
+                        <a href="{{ route('set-locale', 'ar') }}"
+                           class="lang-btn {{ app()->getLocale() == 'ar' ? 'lang-active' : '' }}"
+                           title="العربية">
+                            <span class="lang-flag">🇩🇿</span>
+                            <span class="lang-code">AR</span>
+                        </a>
                     </div>
 
                     <!-- Theme Toggle -->

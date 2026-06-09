@@ -211,7 +211,7 @@
     display: block;
     margin-top: 10px;
     white-space: nowrap;
-    overflow: hidden;
+    line-height: 1.2;
     transition: opacity 0.2s;
 }
 
@@ -1382,4 +1382,62 @@ select option {
 body.light-theme select option {
     background-color: #ffffff !important;
     color: #0f172a !important;
+}
+
+/* ─── RESPONSIVE MEDIA QUERIES ─── */
+@media (max-width: 1024px) {
+    .sidebar {
+        position: fixed !important;
+        left: -260px !important;
+        top: 0;
+        bottom: 0;
+        height: 100vh !important;
+        z-index: 1000 !important;
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    
+    .sidebar.open {
+        left: 0 !important;
+    }
+    
+    .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        z-index: 900;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+    
+    .sidebar-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .topbar {
+        padding: 0 16px !important;
+    }
+    
+    .topbar-subtitle {
+        display: none !important;
+    }
+
+    .stat-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .charts-row {
+        grid-template-columns: 1fr !important;
+    }
+
+    .bottom-row {
+        grid-template-columns: 1fr !important;
+    }
+
+    .page-body-container {
+        padding: 16px !important;
+    }
 }
