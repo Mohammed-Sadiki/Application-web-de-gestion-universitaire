@@ -35,9 +35,6 @@
                         <x-nav-link :href="route('professor.dashboard')" :active="request()->routeIs('professor.dashboard')">
                             {{ __('Prof Dashboard') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('crm.dashboard')" :active="request()->routeIs('crm.dashboard')">
-                            {{ __('CRM Dashboard') }}
-                        </x-nav-link>
                         <x-nav-link :href="route('professor.grades.index')" :active="request()->routeIs('professor.grades.*')"> {{ __('Mes Notes') }} </x-nav-link>
                         <x-nav-link :href="route('professor.absences.index')" :active="request()->routeIs('professor.absences.*')"> {{ __('Absences') }} </x-nav-link>
                         <x-nav-link :href="route('professor.lesson_logs.index')" :active="request()->routeIs('professor.lesson_logs.*')"> {{ __('Cahier de textes') }} </x-nav-link>
@@ -49,9 +46,6 @@
                     @elseif(auth()->user()->isStudent())
                         <x-nav-link :href="route('student.dashboard')" :active="request()->routeIs('student.dashboard')">
                             {{ __('Mon Espace') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('crm.dashboard')" :active="request()->routeIs('crm.dashboard')">
-                            {{ __('CRM Dashboard') }}
                         </x-nav-link>
                         <x-nav-link :href="route('student.grades.index')" :active="request()->routeIs('student.grades.*')"> {{ __('Mes Notes') }} </x-nav-link>
                         <x-nav-link :href="route('student.absences.index')" :active="request()->routeIs('student.absences.*')"> {{ __('Absences') }} </x-nav-link>
@@ -122,15 +116,9 @@
                 <x-responsive-nav-link :href="route('professor.dashboard')" :active="request()->routeIs('professor.dashboard')">
                     {{ __('Prof Dashboard') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('crm.dashboard')" :active="request()->routeIs('crm.dashboard')">
-                    {{ __('CRM Dashboard') }}
-                </x-responsive-nav-link>
             @elseif(auth()->user()->isStudent())
                 <x-responsive-nav-link :href="route('student.dashboard')" :active="request()->routeIs('student.dashboard')">
                     {{ __('Mon Espace') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('crm.dashboard')" :active="request()->routeIs('crm.dashboard')">
-                    {{ __('CRM Dashboard') }}
                 </x-responsive-nav-link>
             @endif
         </div>

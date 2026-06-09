@@ -8,11 +8,25 @@ Route::get('/', function () {
 });
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
-        return view('crm_dashboard');
+        if (auth()->user()->isAdmin()) {
+            return view('crm_dashboard');
+        } elseif (auth()->user()->isProfessor()) {
+            return redirect()->route('professor.dashboard');
+        } elseif (auth()->user()->isStudent()) {
+            return redirect()->route('student.dashboard');
+        }
+        return abort(403);
     })->name('dashboard');
 
     Route::get('/crm', function () {
-        return redirect()->route('dashboard');
+        if (auth()->user()->isAdmin()) {
+            return redirect()->route('dashboard');
+        } elseif (auth()->user()->isProfessor()) {
+            return redirect()->route('professor.dashboard');
+        } elseif (auth()->user()->isStudent()) {
+            return redirect()->route('student.dashboard');
+        }
+        return abort(403);
     })->name('crm.dashboard');
 
     // Admin Routes

@@ -49,15 +49,17 @@
                 </div>
 
                 <nav class="sidebar-nav">
-                    <span class="nav-section-label">Tableau de Bord</span>
-                    <a href="{{ route('dashboard') }}" class="sidebar-nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                        <span class="nav-icon">
-                            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
-                            </svg>
-                        </span>
-                        <span class="nav-label">Dashboard CRM</span>
-                    </a>
+                    @if(auth()->user()->isAdmin())
+                        <span class="nav-section-label">Tableau de Bord</span>
+                        <a href="{{ route('dashboard') }}" class="sidebar-nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                            <span class="nav-icon">
+                                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+                                </svg>
+                            </span>
+                            <span class="nav-label">Dashboard CRM</span>
+                        </a>
+                    @endif
 
                     <!-- Links for ADMIN -->
                     @if(auth()->user()->isAdmin())
