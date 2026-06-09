@@ -17,23 +17,23 @@
                         if (str_contains($key, 'absences')) {
                             $label = __('app.reported_absences');
                             $cardStyle = 'bg-gradient-to-r from-[#d946ef] to-[#8b5cf6] text-white shadow-lg shadow-purple-900/30';
-                            $badgeText = 'Alerte';
+                            $badgeText = __('app.alert_badge');
                             $badgeStyle = 'bg-white/20';
-                            $footerText = 'Suivi d\'assiduité actif';
+                            $footerText = __('app.active_attendance');
                             $iconPath = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>';
                         } elseif (str_contains($key, 'schedules') || str_contains($key, 'emploi')) {
                             $label = __('app.today_sessions');
                             $cardStyle = 'bg-gradient-to-r from-[#06b6d4] to-[#3b82f6] text-white shadow-lg shadow-cyan-900/30';
-                            $badgeText = 'Aujourd\'hui';
+                            $badgeText = __('app.today_badge');
                             $badgeStyle = 'bg-white/20';
-                            $footerText = 'EDT synchronisé';
+                            $footerText = __('app.edt_synced');
                             $iconPath = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>';
                         } else {
                             $label = __('app.taught_modules');
                             $cardStyle = 'dark-card';
-                            $badgeText = 'Spécialité';
+                            $badgeText = __('app.specialty_badge');
                             $badgeStyle = 'bg-[#8b5cf6]/20 text-[#8b5cf6]';
-                            $footerText = 'Plan de cours validé';
+                            $footerText = __('app.syllabus_validated');
                             $iconPath = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.168.477 4 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.168.477-4 1.253"/>';
                         }
                     @endphp

@@ -1,59 +1,76 @@
 <x-guest-layout>
-    <!-- Logo -->
-    <div class="mb-8 text-center">
-        <div class="flex justify-center items-center mb-3">
-            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#8b5cf6] to-[#d946ef] flex items-center justify-center shadow-lg shadow-purple-900/40 mr-3">
-                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 3L1 9L12 15L21 9L12 3M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z"/>
-                </svg>
-            </div>
-            <span class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#a78bfa] to-[#e879f9] tracking-tight">PFM</span>
-        </div>
-        <p class="text-gray-400 text-sm font-medium">{{ __('app.platform_description') }}</p>
-    </div>
 
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+    {{-- Session Status --}}
+    @if (session('status'))
+        <div class="session-status">{{ session('status') }}</div>
+    @endif
 
-    <form method="POST" action="{{ route('login') }}">
+    <form method="POST" action="{{ route('login') }}" style="display:flex; flex-direction:column; gap:14px;">
         @csrf
 
-        <!-- Email Address -->
+        {{-- Login / Email --}}
         <div>
-            <label for="email" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">{{ __('app.email_address') }}</label>
-            <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
-                placeholder="{{ __('app.email_placeholder') }}"
-                class="w-full bg-white/5 border border-white/10 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#8b5cf6] focus:ring-1 focus:ring-[#8b5cf6] transition placeholder-gray-600">
-            <x-input-error :messages="$errors->get('email')" class="mt-2 text-[#d946ef] text-xs" />
+            <div class="input-group">
+                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <circle cx="12" cy="8" r="4"/>
+                    <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke-linecap="round"/>
+                </svg>
+                <input
+                    id="email"
+                    type="email"
+                    name="email"
+                    value="{{ old('email') }}"
+                    required
+                    autofocus
+                    autocomplete="username"
+                    placeholder="{{ __('app.email_placeholder') ?? 'Login' }}"
+                    class="login-input"
+                >
+            </div>
+            @error('email')
+                <p class="field-error">{{ $message }}</p>
+            @enderror
         </div>
 
-        <!-- Password -->
-        <div class="mt-5">
-            <label for="password" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">{{ __('app.password') }}</label>
-            <input id="password" type="password" name="password" required
-                placeholder="{{ __('app.password_placeholder') }}"
-                class="w-full bg-white/5 border border-white/10 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#8b5cf6] focus:ring-1 focus:ring-[#8b5cf6] transition placeholder-gray-600">
-            <x-input-error :messages="$errors->get('password')" class="mt-2 text-[#d946ef] text-xs" />
+        {{-- Password --}}
+        <div>
+            <div class="input-group">
+                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <rect x="5" y="11" width="14" height="10" rx="2"/>
+                    <path d="M8 11V7a4 4 0 0 1 8 0v4" stroke-linecap="round"/>
+                    <circle cx="12" cy="16" r="1.2" fill="currentColor" stroke="none"/>
+                </svg>
+                <input
+                    id="password"
+                    type="password"
+                    name="password"
+                    required
+                    autocomplete="current-password"
+                    placeholder="{{ __('app.password_placeholder') ?? 'Password' }}"
+                    class="login-input"
+                >
+            </div>
+            @error('password')
+                <p class="field-error">{{ $message }}</p>
+            @enderror
         </div>
 
-        <!-- Remember Me -->
-        <div class="flex items-center justify-between mt-5">
-            <label class="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" name="remember" class="rounded border-white/20 bg-white/10 text-[#8b5cf6] focus:ring-[#8b5cf6]">
-                <span class="text-xs text-gray-400">{{ __('app.remember_me') }}</span>
-            </label>
+        {{-- Sign In Button --}}
+        <button type="submit" class="signin-btn">
+            {{ strtoupper(__('app.login_button') ?? 'Sign In') }}
+        </button>
+
+        {{-- Links --}}
+        <div class="form-links">
             @if (Route::has('password.request'))
-                <a href="{{ route('password.request') }}" class="text-xs text-[#8b5cf6] hover:text-[#d946ef] transition duration-200">
-                    {{ __('app.forgot_password') }}
+                <a href="{{ route('password.request') }}">
+                    {{ __('app.forgot_password') ?? 'Forgot your password?' }}
                 </a>
             @endif
-        </div>
-
-        <div class="mt-7">
-            <button type="submit"
-                class="w-full py-3 bg-gradient-to-r from-[#8b5cf6] to-[#d946ef] hover:opacity-90 text-white font-bold rounded-xl shadow-lg shadow-purple-900/30 transition duration-200 transform hover:-translate-y-0.5 text-sm tracking-wide">
-                {{ __('app.login_button') }} →
-            </button>
+            <a href="#">
+                {{ __('First account activation') }}
+            </a>
         </div>
     </form>
+
 </x-guest-layout>

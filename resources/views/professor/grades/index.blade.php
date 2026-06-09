@@ -2,34 +2,36 @@
     <x-slot name="header">
         <div class="flex justify-between items-center w-full">
             <div>
-                <div class="topbar-title">Gestion des Notes</div>
-                <div class="topbar-subtitle">Saisie et modification des notes pour vos modules attribués</div>
+                <div class="topbar-title">{{ __('app.grades') ?? 'Gestion des Notes' }}</div>
+                <div class="topbar-subtitle">{{ __('Saisie et modification des notes pour vos modules attribués') }}</div>
             </div>
         </div>
     </x-slot>
 
     <div class="py-6 animate-fade-in">
-        <div class="dark-card rounded-3xl overflow-hidden border border-white/5">
-            <div class="p-6 bg-[#17192a]/30 border-b border-white/5">
-                <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                    <span class="w-2.5 h-2.5 bg-[#8b5cf6] rounded-full animate-pulse"></span>
-                    Mes Modules
-                </h3>
+        <div class="profile-card">
+            <span class="dot-indicator bg-[#8b5cf6]"></span>
+            <div style="margin-bottom: 20px;">
+                <h2 style="color: #1e1b4b !important; font-weight: 800 !important; font-size: 1.35rem !important; display: flex; align-items: center; gap: 8px; margin: 0;">
+                    {{ __('app.my_modules') }}
+                </h2>
             </div>
-            <div class="p-6">
+            <div>
                 @if($modules->isEmpty())
-                    <p class="text-gray-400 italic text-center py-6">Aucun module assigné pour le moment.</p>
+                    <p class="text-gray-400 italic text-center py-6">{{ __('app.no_assigned_modules') }}</p>
                 @else
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         @foreach($modules as $module)
-                            <div class="border border-white/5 rounded-2xl p-5 bg-[#17192a]/30 hover:border-[#8b5cf6]/40 hover:bg-[#8b5cf6]/5 transition-all duration-300 flex flex-col justify-between">
+                            <div class="profile-card" style="padding: 24px !important; border-radius: 18px !important; display: flex; flex-direction: column; justify-content: space-between; min-height: 180px; box-shadow: 0 4px 15px rgba(0,0,0,0.02) !important;">
                                 <div>
-                                    <h4 class="font-bold text-white text-lg mb-1">{{ $module->name }}</h4>
+                                    <h4 class="font-bold text-[#1e1b4b] text-lg mb-1">{{ $module->name }}</h4>
                                     <p class="text-sm text-gray-400 mb-4">{{ $module->department->name }}</p>
                                 </div>
-                                <a href="{{ route('professor.grades.edit', $module) }}" class="inline-flex justify-center items-center px-4 py-2.5 bg-gradient-to-r from-[#8b5cf6] to-[#d946ef] hover:opacity-90 text-white text-sm font-bold rounded-xl shadow-md transition duration-200">
-                                    Saisir les notes
-                                </a>
+                                <div style="display: flex; justify-content: flex-start;">
+                                    <a href="{{ route('professor.grades.edit', $module) }}" class="inline-flex justify-center items-center px-4 py-2.5 bg-gradient-to-r from-[#8b5cf6] to-[#d946ef] hover:opacity-90 text-white text-sm font-bold rounded-xl shadow-md transition duration-200" style="text-decoration: none !important; color: white !important; font-weight: 700 !important; background: linear-gradient(135deg, #a855f7, #ec4899) !important; border-radius: 12px !important; box-shadow: 0 4px 12px rgba(168,85,247,0.2) !important;">
+                                        {{ __('app.enter_grades') }}
+                                    </a>
+                                </div>
                             </div>
                         @endforeach
                     </div>

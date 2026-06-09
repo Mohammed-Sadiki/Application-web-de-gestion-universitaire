@@ -40,7 +40,7 @@
                         <span class="text-xs font-bold uppercase tracking-wider text-cyan-100">{{ __('app.total_absences_stat') }}</span>
                         <span class="px-2 py-0.5 text-[10px] bg-white/20 rounded-full font-bold">{{ __('app.this_semester') }}</span>
                     </div>
-                    <div class="text-4xl font-black">{{ $stats['absences_totales'] }} <span class="text-lg font-medium text-cyan-100">heures</span></div>
+                    <div class="text-4xl font-black">{{ $stats['absences_totales'] }} <span class="text-lg font-medium text-cyan-100">{{ __('app.hours') }}</span></div>
                     <div class="text-xs text-cyan-100 mt-2 flex items-center">
                         <span class="w-1.5 h-1.5 rounded-full bg-yellow-300 mr-1.5"></span> {{ __('app.real_time_followup') }}
                     </div>
@@ -57,7 +57,7 @@
                         <span class="text-xs font-bold uppercase tracking-wider text-gray-400">{{ __('app.followed_modules') }}</span>
                         <span class="px-2 py-0.5 text-[10px] bg-purple-500/20 text-[#8b5cf6] rounded-full font-bold">{{ __('app.active') }}</span>
                     </div>
-                    <div class="text-4xl font-black text-white">{{ $stats['modules_suivis'] }} <span class="text-lg font-medium text-gray-400">cours</span></div>
+                    <div class="text-4xl font-black text-white">{{ $stats['modules_suivis'] }} <span class="text-lg font-medium text-gray-400">{{ __('app.courses_count') }}</span></div>
                     <div class="text-xs text-[#06b6d4] mt-2 flex items-center">
                         <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 mr-1.5 animate-pulse"></span> {{ __('app.complete_program') }}
                     </div>
